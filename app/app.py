@@ -1,10 +1,13 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 
 app = Flask(__name__)
-user = "Roberto"
 
 
-@app.route("/index")
-@app.route("/index/<name>")
-def index(name=None):
+@app.route("/")
+def index(name="Roberto"):
     return render_template("index.html", name=name)
+
+
+@app.route("/temas")
+def tema():
+    return render_template("tema.html")

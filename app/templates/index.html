@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Foro de Metal</title>
+</head>
+
+<body>
+    <header>
+        <h1>Foro de metal</h1>
+    </header>
+    <section class="greetings">
+        {% if name %}
+        <h2>Hola, {{ name }}!</h2>
+        {% else %}
+        <h2>Hola, metalero!</h2>
+        {% endif %}
+    </section>
+    <section class="temas">
+        <h2>Temas</h2>
+        <h3><a href="{{ url_for('tema') }}">
+                ¿Cuál es la banda que más te influenció?</a></h3>
+    </section>
+    <footer>
+
+    </footer>
+</body>
+
+</html>
