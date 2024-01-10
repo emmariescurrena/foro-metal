@@ -1,9 +1,19 @@
 @font-face {
     font-family: "Open Sans Bold";
-    src: url("{{ url_for('static', filename='OpenSans-VariableFont_wdth,wght') }}");
+    src: {{ url_for('static', filename='OpenSans-VariableFont_wdth_wght') }};
     font-weight: 700;
 }
 
-h1 {
+@font-face {
+    font-family: "Open Sans Regular";
+    src: {{ url_for('static', filename='OpenSans-VariableFont_wdth_wght') }};
+    font-weight: 400;
+}
+
+* {
+    font-family: "Open Sans regular", sans-serif;
+}
+
+h1, h2 {
     font-family: "Open Sans Bold", sans-serif;
 }
