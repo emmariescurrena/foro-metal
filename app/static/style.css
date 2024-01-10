@@ -17,3 +17,8 @@
 h1, h2 {
     font-family: "Open Sans Bold", sans-serif;
 }
+
+a > img {
+    width: 2em;
+    height: 2em;
+}
