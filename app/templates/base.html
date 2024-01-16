@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>¿Cuál es la banda que más te influenció? | Foro de Metal</title>
+    <title>{% block title %}Foro de Metal{% endblock %}</title>
 </head>
-
 <body>
     <header>
-        <h1>Foro de metal</h1>
+        <h1><a href="{{ url_for('index') }}">Foro de metal</a></h1>
     </header>
-    <section class="tema">
-        <h2>¿Cuál es la banda que más te influenció?</h2>
-    </section>
+    <main>
+        {% block main %}{% endblock %}
+    </main>
     <footer>
         <p>Made by emmariescurrena</p>
         <a href="https://github.com/emmariescurrena" target="_blank">
@@ -23,5 +21,4 @@
         </a>
     </footer>
 </body>
-
 </html>
