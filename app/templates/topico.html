@@ -1,5 +1,22 @@
 {% extends "base.html" %}
-{% block title %}¿Cuál es la mejor banda y disco del metal?{% endblock %}
+{% block title %}{{ topico[0] }} | {% endblock %}
 {% block main %}
-    
-{% endblock %}
+    <h1 class="titulo">{{ topico[0] }}</h1>
+    <p class="texto">{{ topico[1] }}</p>
+    <div class="usuario">
+        {# Nombre usuario y fecha #}
+        <p class="nombreUsuario">{{ topico[2] }}, {{ topico[3] }}</p>
+        <img  class="avatar" src="" alt="avatar-usuario-{{ topico[2] }}">
+        <p class="about"><i>{{ topico[4] }}</i></p>
+    </div>
+    <p class="fecha">{{ topico[3] }}</p>
+    {% for respuesta in respuestas %}
+        <p class="texto">{{ respuesta[0]}}</p>
+        <div class="usuario">
+            {# Nombre usuario y fecha #}
+            <p>{{ respuesta[1] }}, {{ respuesta[2] }}</p>
+            <img class="avatar" src="" alt="avatar-usuario-{{ respuesta[1] }}">
+            <p class="about"><i>{{ respuesta[3] }}</i></p>
+        </div>
+    {% endfor %}
+{% endblock %}  

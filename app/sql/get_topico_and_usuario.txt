@@ -1,0 +1,1 @@
+SELECT top.nombre, top.texto, us.nombre, top.fecha, us.about, top.id FROM topicos top FULL JOIN usuarios us ON top.id_usuario = us.id WHERE top.url = 

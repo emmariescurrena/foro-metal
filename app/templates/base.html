@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>{% block title %}Foro de Metal{% endblock %}</title>
+    <title>{% block title %}{% endblock %}Foro de Metal</title>
 </head>
 <body>
     <header>
-        <h1><a href="{{ url_for('index') }}">Foro de metal</a></h1>
+        <p><a href="{{ url_for('index') }}">Foro de metal</a></p>
     </header>
     <main>
         {% block main %}{% endblock %}

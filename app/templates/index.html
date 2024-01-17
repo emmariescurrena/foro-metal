@@ -1,8 +1,14 @@
 {% extends "base.html" %}
+{% block title %} Tópicos | {% endblock %}
 {% block main %}
     <section class="topicos">
-        <h2>Tópicos</h2>
-        <h3><a href="{{ url_for('topico') }}">
-                ¿Cuál es la mejor banda y disco del metal?</a></h3>
+        <h1>Tópicos</h1>
+        {% for topico in topicos %}
+            <h2>
+                <a href="{{ url_for('topico', url=topico[0]) }}">
+                {{ topico[1] }}
+                </a>
+            </h2>
+        {% endfor %}
     </section>
 {% endblock %}

@@ -1,0 +1,1 @@
+SELECT re.texto, us.nombre, re.fecha, us.about FROM respuestas re FULL JOIN usuarios us ON re.id_usuario = us.id WHERE re.id_topico =
