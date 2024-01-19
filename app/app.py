@@ -1,9 +1,11 @@
 import os
 import psycopg2
 from flask import *
-import json
 
 app = Flask(__name__)
+
+with open('sql.txt', 'r') as file:
+    sqlArr = file.read().splitlines()
 
 
 def titulo_a_url(titulo):
@@ -35,7 +37,8 @@ def get_db_connection():
 def index():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("SELECT url, nombre FROM topicos;")
+    sql = sqlArr[0]
+    cur.execute(sql)
     topicos = cur.fetchall()
     cur.close()
     conn.close()
@@ -48,8 +51,7 @@ def topico(url=None):
     cur = conn.cursor()
 
     def get_topico_and_usuario(url):
-        with open('sql/get_topico_and_usuario.txt', 'r') as file:
-            sql = f"{file.read()} '{url}';"
+        sql = f"{sqlArr[1]} '{url}';"
         cur.execute(sql)
         topico = cur.fetchone()
         return topico
@@ -57,8 +59,7 @@ def topico(url=None):
     id_topico = topico[5]
 
     def get_respuestas_with_usuarios(id_topico):
-        with open('sql/get_respuestas_with_usuarios.txt', 'r') as file:
-            sql = f"{file.read()} '{id_topico}';"
+        sql = f"{sqlArr[2]} '{id_topico}';"
         cur.execute(sql)
         respuestas = cur.fetchall()
         return respuestas
