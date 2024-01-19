@@ -33,6 +33,10 @@ def get_db_connection():
 
 
 @app.route("/")
+def root():
+    return redirect(url_for('index'))
+
+
 @app.route("/index")
 def index():
     conn = get_db_connection()
