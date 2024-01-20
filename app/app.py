@@ -68,6 +68,7 @@ def topico(url=None):
         respuestas = cur.fetchall()
         return respuestas
     respuestas = get_respuestas_with_usuarios(id_topico)
+    print(respuestas)
 
     cur.close()
     conn.close()

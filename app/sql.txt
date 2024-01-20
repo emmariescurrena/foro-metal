@@ -1,3 +1,3 @@
-SELECT url, nombre, texto, id_usuario, fecha from topicos;
-SELECT top.nombre, top.texto, us.nombre, top.fecha, us.about, top.id FROM topicos top FULL JOIN usuarios us ON top.id_usuario = us.id WHERE top.url =
-SELECT re.texto, us.nombre, re.fecha, us.about FROM respuestas re FULL JOIN usuarios us ON re.id_usuario = us.id WHERE re.id_topico =
+SELECT top.url, top.nombre, top.texto, us.nombre, top.fecha FROM topicos top INNER JOIN usuarios us ON top.id_usuario = us.id;
+SELECT top.nombre, top.texto, us.nombre, top.fecha, us.about, top.id FROM topicos top INNER JOIN usuarios us ON top.id_usuario = us.id WHERE top.url =
+SELECT re.texto, us.nombre, re.fecha, us.about FROM respuestas re INNER JOIN usuarios us ON re.id_usuario = us.id WHERE re.id_topico =

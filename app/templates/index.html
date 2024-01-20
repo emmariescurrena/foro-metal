@@ -4,14 +4,14 @@
     <h1>Tópicos</h1>
         {% for topico in topicos %}
             <article class="topico">
-                <a href="{{ url_for('topico', url=topico[0]) }}">
+                <a href="{{ url_for ('topico', url=topico[0]) }}">
                     <h2 class="titulo">{{ topico[1] }}</h2>
                     {% if topico[2]|length > 100 %}
                         <p class="texto">{{ topico[2][:100] }}...</p>
                     {% else %}
                         <p class="texto">{{ topico[2] }}</p>
                     {% endif %}
-                    <p class="nombreUsuario">{{ topico[3] }}</p>
+                    <p class="nombreUsuario">{{ topico[3] }}, {{ topico[4] }} </p>
                 </a>
             </article>
         {% endfor %}
