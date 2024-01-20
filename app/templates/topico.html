@@ -1,22 +1,26 @@
 {% extends "base.html" %}
 {% block title %}{{ topico[0] }} | {% endblock %}
 {% block main %}
-    <h1 class="titulo">{{ topico[0] }}</h1>
-    <p class="texto">{{ topico[1] }}</p>
-    <div class="usuario">
-        {# Nombre usuario y fecha #}
-        <p class="nombreUsuario">{{ topico[2] }}, {{ topico[3] }}</p>
-        <img  class="avatar" src="" alt="avatar-usuario-{{ topico[2] }}">
-        <p class="about"><i>{{ topico[4] }}</i></p>
-    </div>
-    <p class="fecha">{{ topico[3] }}</p>
-    {% for respuesta in respuestas %}
-        <p class="texto">{{ respuesta[0]}}</p>
+    <article class="topico">
+        <h1 class="titulo">{{ topico[0] }}</h1>
+        <p class="texto">{{ topico[1] }}</p>
         <div class="usuario">
+            <img  class="avatar" src="" alt="avatar-usuario-{{ topico[2] }}">
             {# Nombre usuario y fecha #}
-            <p>{{ respuesta[1] }}, {{ respuesta[2] }}</p>
-            <img class="avatar" src="" alt="avatar-usuario-{{ respuesta[1] }}">
-            <p class="about"><i>{{ respuesta[3] }}</i></p>
+            <p class="nombreUsuario">{{ topico[2] }}, {{ topico[3] }}</p>
+            <p class="about"><i>{{ topico[4] }}</i></p>
         </div>
+    </article>
+    {% for respuesta in respuestas %}
+        <article class="respuesta">
+            <p class="texto">{{ respuesta[0]}}</p>
+            <div class="usuario">
+                {# Nombre usuario y fecha #}
+                <img class="avatar" src=""
+                alt="avatar-usuario-{{ respuesta[1] }}">
+                <p>{{ respuesta[1] }}, {{ respuesta[2] }}</p>
+                <p class="about"><i>{{ respuesta[3] }}</i></p>
+            </div>
+        </article>
     {% endfor %}
 {% endblock %}  
