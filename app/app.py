@@ -68,12 +68,22 @@ def topico(url=None):
         respuestas = cur.fetchall()
         return respuestas
     respuestas = get_respuestas_with_usuarios(id_topico)
-    print(respuestas)
 
     cur.close()
     conn.close()
 
     return render_template("topico.html", topico=topico, respuestas=respuestas)
+
+
+@app.route("/<nombreUsuario>")
+def usuario(nombreUsuario=None):
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.close()
+    conn.close()
+
+    return render_template("usuario.html", )
 
 
 if __name__ == '__main__':
