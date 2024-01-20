@@ -41,9 +41,11 @@ def root():
 def index():
     conn = get_db_connection()
     cur = conn.cursor()
+
     sql = sqlArr[0]
     cur.execute(sql)
     topicos = cur.fetchall()
+
     cur.close()
     conn.close()
     return render_template("index.html", topicos=topicos)
@@ -54,20 +56,14 @@ def topico(url=None):
     conn = get_db_connection()
     cur = conn.cursor()
 
-    def get_topico_and_usuario(url):
-        sql = f"{sqlArr[1]} '{url}';"
-        cur.execute(sql)
-        topico = cur.fetchone()
-        return topico
-    topico = get_topico_and_usuario(url)
+    sql = f"{sqlArr[1]} '{url}';"
+    cur.execute(sql)
+    topico = cur.fetchone()
     id_topico = topico[5]
 
-    def get_respuestas_with_usuarios(id_topico):
-        sql = f"{sqlArr[2]} '{id_topico}';"
-        cur.execute(sql)
-        respuestas = cur.fetchall()
-        return respuestas
-    respuestas = get_respuestas_with_usuarios(id_topico)
+    sql = f"{sqlArr[2]} '{id_topico}';"
+    cur.execute(sql)
+    respuestas = cur.fetchall()
 
     cur.close()
     conn.close()
@@ -80,10 +76,14 @@ def usuario(nombreUsuario=None):
     conn = get_db_connection()
     cur = conn.cursor()
 
+    sql = f"{sqlArr[3]} '{nombreUsuario}';"
+    cur.execute(sql)
+    usuario = cur.fetchone()
+
     cur.close()
     conn.close()
 
-    return render_template("usuario.html", )
+    return render_template("usuario.html", usuario=usuario)
 
 
 if __name__ == '__main__':

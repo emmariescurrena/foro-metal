@@ -1,6 +1,18 @@
 {% extends "base.html"%}
-{% block title %} {{ nombre }} {% endblock %}
+{% block title %} {{ usuario[0] }} {% endblock %}
 {% block main %}
-<h2>{{ usuario.nombre }}</h2>
-    <p>{{ usuario.fecha_creacion }}</p>
+    <img class="avatarUsuario" src="{{ usuario[1] }}" alt="avatar-{{ usuario[0] }}">
+    <h1 class="titulo">{{ usuario[0]}}</h1>
+    <p class="desde">Desde {{ usuario[2] }}</p>
+    <p class="about">{{ usuario[3] }}</p>
+    <div class="aportes">
+        <div class="aporte">
+            <p class="aporteCantidad">{{ usuario[4] }}</p>
+            <p class="aporteQue">Tópicos creados</p>
+        </div>
+        <div class="aporte">
+            <p class="aporteCantidad">{{ usuario[5] }}</p>
+            <p class="aporteQue">Respuestas escritas</p>
+        </div>
+    </div>
 {% endblock %}

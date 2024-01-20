@@ -8,7 +8,7 @@
             <img  class="avatar" src="" alt="avatar-usuario-{{ topico[2] }}">
             {# Nombre usuario y fecha #}
             <p class="nombreUsuario">
-                <a href="{{ url_for('usuario', nombreUsuario=topico[2]) }}">{{ topico[2] }}</a>,
+                <a href="{{ url_for('usuario', nombreUsuario='topico[2]') }}">@{{ topico[2] }}</a>,
                 {{ topico[3] }}
             </p>
             <p class="about"><i>{{ topico[4] }}</i></p>
@@ -22,7 +22,7 @@
                 <img class="avatar" src=""
                 alt="avatar-usuario-{{ respuesta[1] }}">
                 <p>
-                    <a href="{{ url_for('usuario', nombreUsuario=respuesta[1]) }}">{{ respuesta[1] }}</a>,
+                    <a href="{{ url_for('usuario', nombreUsuario=respuesta[1]) }}">@{{ respuesta[1] }}</a>,
                     {{ respuesta[2] }}
                 </p>
                 <p class="about"><i>{{ respuesta[3] }}</i></p>
