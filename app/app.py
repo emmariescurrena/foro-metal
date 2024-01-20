@@ -74,3 +74,7 @@ def topico(url=None):
     conn.close()
 
     return render_template("topico.html", topico=topico, respuestas=respuestas)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
