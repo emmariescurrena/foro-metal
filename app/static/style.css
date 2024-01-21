@@ -27,3 +27,8 @@ a > img {
     width: 2em;
     height: 2em;
 }
+
+.avatar {
+    width: 10em;
+    height: auto;
+}

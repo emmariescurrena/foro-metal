@@ -1,6 +1,11 @@
 {% extends "base.html"%}
 {% block title %} {{ info_usuario[0] }} {% endblock %}
 {% block main %}
+    <img 
+        class="avatar"
+        src="{{ url_for('static', filename='img/' + info_usuario[1] + '.svg') }}"
+        alt="avatar-{{ info_usuario[0] }}"
+    >           
     <h1 class="titulo">{{ info_usuario[0]}}</h1>
     <p class="desde">Desde {{ info_usuario[2] }}</p>
     <p class="about">{{ info_usuario[3] }}</p>

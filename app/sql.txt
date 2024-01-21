@@ -1,4 +1,4 @@
 SELECT top.url, top.nombre, top.texto, us.nombre, top.fecha FROM topicos top INNER JOIN usuarios us ON top.id_usuario = us.id;
 SELECT top.nombre, top.texto, us.nombre, top.fecha, us.about, top.id FROM topicos top INNER JOIN usuarios us ON top.id_usuario = us.id WHERE top.url =
 SELECT re.texto, us.nombre, re.fecha, us.about FROM respuestas re INNER JOIN usuarios us ON re.id_usuario = us.id WHERE re.id_topico =
-SELECT us.nombre, av.img, us.fecha_de_creacion, us.about, us.topicos_creados, us.respuestas_escritas FROM usuarios us INNER JOIN avatars av on us.img_id = av.id WHERE us.nombre =
+SELECT nombre, img_id, fecha_de_creacion, about, topicos_creados, respuestas_escritas FROM usuarios WHERE nombre =
