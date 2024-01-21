@@ -1,18 +1,17 @@
 {% extends "base.html"%}
-{% block title %} {{ usuario[0] }} {% endblock %}
+{% block title %} {{ info_usuario[0] }} {% endblock %}
 {% block main %}
-    <img class="avatarUsuario" src="{{ usuario[1] }}" alt="avatar-{{ usuario[0] }}">
-    <h1 class="titulo">{{ usuario[0]}}</h1>
-    <p class="desde">Desde {{ usuario[2] }}</p>
-    <p class="about">{{ usuario[3] }}</p>
+    <h1 class="titulo">{{ info_usuario[0]}}</h1>
+    <p class="desde">Desde {{ info_usuario[2] }}</p>
+    <p class="about">{{ info_usuario[3] }}</p>
     <div class="aportes">
         <div class="aporte">
-            <p class="aporteCantidad">{{ usuario[4] }}</p>
-            <p class="aporteQue">Tópicos creados</p>
+            <p class="aporte-cantidad">{{ info_usuario[4] }}</p>
+            <p class="aporte-que">Tópicos creados</p>
         </div>
         <div class="aporte">
-            <p class="aporteCantidad">{{ usuario[5] }}</p>
-            <p class="aporteQue">Respuestas escritas</p>
+            <p class="aporte-cantidad">{{ info_usuario[5] }}</p>
+            <p class="aporte-que">Respuestas escritas</p>
         </div>
     </div>
 {% endblock %}
