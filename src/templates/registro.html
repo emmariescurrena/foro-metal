@@ -1,0 +1,21 @@
+{% extends "base.html" %} 
+{% block title %}Registro | {% endblock %}
+{% block main %}
+    <h1>Registro</h1>
+    <form class="form" method="post">
+        <label for="nombreInput">Nombre de usuario*</label>
+        <input id="nombreInput" class="form__input" type="text"
+        placeholder="roberto_casablanca" required>
+        <label for="emailInput">Email*</label>
+        <input id="emailInput" class="form__input" type="text"
+        placeholder="rcasablanca@email.com">
+        <label for="contraseñaInput">Contraseña*</label required>
+        <p class="contraseña-req">
+            La contraseña debe tener al menos 8 caracteres, 1 letra mayúscula,
+            un carácter especial y un carácter numérico.
+        </p>
+        <input id="contraseñaInput" class="form__input" type="text" required>
+        <label for="repetirContraseñaInput">Repetir contraseña</label>
+        <input id="repetirContraseñaInput" class="form__input" type="text" required>
+    </form>
+{% endblock %}

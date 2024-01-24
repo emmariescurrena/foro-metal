@@ -1,12 +1,12 @@
 @font-face {
     font-family: "Open Sans Bold";
-    src: {{ url_for('static', filename='OpenSans-VariableFont_wdth_wght') }};
+    src: "{{ url_for('static', filename='OpenSans-VariableFont_wdth_wght') }}";
     font-weight: 700;
 }
 
 @font-face {
     font-family: "Open Sans Regular";
-    src: {{ url_for('static', filename='OpenSans-VariableFont_wdth_wght') }};
+    src: "{{ url_for('static', filename='OpenSans-VariableFont_wdth_wght') }}";
     font-weight: 400;
 }
 
@@ -31,4 +31,9 @@ a > img {
 .avatar {
     width: 10em;
     height: auto;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
 }

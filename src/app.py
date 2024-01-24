@@ -1,16 +1,19 @@
-"""Import os to access environ to export DB username and password"""
+"""Foro de metal app"""
+
 import os
 import psycopg2
+from dotenv import load_dotenv
 from flask import Flask, redirect, url_for, render_template
 
 app = Flask(__name__)
+load_dotenv()
 
 with open('sql.txt', 'r', encoding="UTF-8") as file:
     sql_arr = file.read().splitlines()
 
 
 def titulo_a_url(titulo):
-    """Simplifica titulo del tópico para poder ser guardado como url"""
+    """Simplfies the topic's name to be saved as an url"""
     url = ""
     titulo = titulo.rstrip()
     titulo = titulo.lstrip()
@@ -27,10 +30,10 @@ def titulo_a_url(titulo):
 def get_db_connection():
     """Get connection to 'foro_de_metal' database"""
     conn = psycopg2.connect(
-        host='localhost',
-        database='foro_de_metal',
-        user=os.environ['DB_USERNAME'],
-        password=os.environ['DB_PASSWORD']
+        host="localhost",
+        database="foro_de_metal",
+        user=os.getenv("DB_USERNAME"),
+        password=os.getenv("DB_PASSWORD")
     )
     return conn
 
@@ -43,7 +46,7 @@ def root():
 
 @app.route("/topicos")
 def index():
-    """Connects to DB and render template for index"""
+    """Connects to DB and renders template for index"""
     conn = get_db_connection()
     cur = conn.cursor()
 
@@ -59,7 +62,7 @@ def index():
 
 @app.route("/topicos/<url>")
 def topico(url=None):
-    """Connects to DB and render template for topico"""
+    """Connects to DB and renders template for topico"""
     conn = get_db_connection()
     cur = conn.cursor()
 
@@ -80,7 +83,7 @@ def topico(url=None):
 
 @app.route("/usuario/<nombre_usuario>")
 def usuario(nombre_usuario=None):
-    """Connects to DB and render template for usuario"""
+    """Connects to DB and renders template for usuario"""
     conn = get_db_connection()
     cur = conn.cursor()
 
@@ -93,6 +96,20 @@ def usuario(nombre_usuario=None):
     conn.close()
 
     return render_template("usuario.html", info_usuario=info_usuario)
+
+
+@app.route("/registro")
+def registro():
+    """Renders template for registro"""
+
+    return render_template("registro.html")
+
+
+@app.route("/login")
+def login():
+    """Renders template for login"""
+
+    return render_template("login.html")
 
 
 if __name__ == '__main__':
