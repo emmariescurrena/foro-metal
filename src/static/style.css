@@ -33,7 +33,7 @@ a > img {
     height: auto;
 }
 
-.form {
+td {
     display: flex;
     flex-direction: column;
 }

@@ -3,13 +3,37 @@
 import os
 import psycopg2
 from dotenv import load_dotenv
-from flask import Flask, redirect, url_for, render_template
+from flask import Flask, redirect, url_for, render_template, request
+from wtforms import Form, StringField, PasswordField, validators
 
 app = Flask(__name__)
 load_dotenv()
 
 with open('sql.txt', 'r', encoding="UTF-8") as file:
     sql_arr = file.read().splitlines()
+
+
+class RegistrationForm(Form):
+    """Form for register"""
+    usuario = StringField(
+        "Nombre de usuario", [
+            validators.Length(min=4, max=30)
+        ]
+    )
+    email = StringField(
+        "Email", [
+            validators.Length(min=6, max=40)
+        ]
+    )
+    contrasena = PasswordField(
+        "Contraseña", [
+            validators.Length(min=8, max=72),
+            validators.EqualTo(
+                'confirmar', message='Las contraseñas deben ser iguales'
+            )
+        ]
+    )
+    confirmar = PasswordField("Repetir contraseña")
 
 
 def titulo_a_url(titulo):
@@ -98,11 +122,14 @@ def usuario(nombre_usuario=None):
     return render_template("usuario.html", info_usuario=info_usuario)
 
 
-@app.route("/registro")
+@app.route("/registro", methods=["GET", "POST"])
 def registro():
     """Renders template for registro"""
 
-    return render_template("registro.html")
+    form = RegistrationForm(request.form)
+    if request.method == "POST":
+        print(form.confirmar.data)
+    return render_template("registro.html", form=form)
 
 
 @app.route("/login")
