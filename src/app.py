@@ -5,39 +5,14 @@ import psycopg2
 from dotenv import load_dotenv
 from flask import Flask, redirect, url_for, render_template, request
 from wtforms import Form, StringField, PasswordField
-from wtforms.validators import Length, EqualTo
+from wtforms.widgets import TextArea
+from wtforms.validators import Length, EqualTo, InputRequired
 
 app = Flask(__name__)
 load_dotenv()
 
 with open('sql.txt', 'r', encoding="UTF-8") as file:
     sql_arr = file.read().splitlines()
-
-
-class RegistrationForm(Form):
-    """Form for register"""
-    usuario = StringField(
-        "Nombre de usuario", [
-            Length(min=4, max=30)
-        ]
-    )
-    email = StringField(
-        "Email", [
-            Length(min=6, max=40)
-        ]
-    )
-    contrasena = PasswordField(
-        "Contraseña", [
-            Length(min=8, max=72),
-        ]
-    )
-    confirmar = PasswordField(
-        "Repetir contraseña", {
-            EqualTo(
-                'contrasena ', message='Las contraseñas deben ser iguales'
-            )
-        }
-    )
 
 
 def titulo_a_url(titulo):
@@ -126,12 +101,52 @@ def usuario(nombre_usuario=None):
     return render_template("usuario.html", info_usuario=info_usuario)
 
 
+class RegistrationForm(Form):
+    """Form for register"""
+    usuario = StringField(
+        "Nombre de usuario*",
+        validators=[
+            InputRequired(),
+            Length(min=4, max=30)
+        ]
+    )
+    email = StringField(
+        "Email*",
+        validators=[
+            InputRequired(),
+            Length(min=6, max=40)
+        ]
+    )
+    contrasena = PasswordField(
+        "Contraseña*",
+        validators=[
+            InputRequired(),
+            Length(min=8, max=72),
+        ]
+    )
+    confirmar = PasswordField(
+        "Repetir contraseña*",
+        validators=[
+            InputRequired(),
+            EqualTo(
+                'contrasena',
+                message='Las contraseñas deben ser iguales'
+            )
+        ]
+    )
+    about = StringField(
+        "Frase que te describa",
+        widget=TextArea(),
+        validators=[Length(max=256)]
+    )
+
+
 @app.route("/registro", methods=["GET", "POST"])
 def registro():
     """Renders template for registro"""
 
     form = RegistrationForm(request.form)
-    if request.method == "POST":
+    if request.method == "POST" and form.validate():
         print(form.confirmar.data)
     return render_template("registro.html", form=form)
 

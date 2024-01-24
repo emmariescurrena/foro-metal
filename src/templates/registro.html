@@ -2,24 +2,28 @@
 {% block title %}Registro | {% endblock %}
 {% block main %}
     <h1>Registro</h1>
+
+    {% macro render_input(field, showErrors="true") %}
+        <tr>
+            <td>{{ field.label }}</td>
+            <td>{{ field(**kwargs)|safe }}
+            {% if showErrors=="true" and field.errors %}
+                <ul class="errors">
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            </td>
+        </tr> 
+    {% endmacro %}
     <form class="form" method="POST">
         <table>
-            <tr>
-                <td>{{ form.usuario.label}}</td>
-                <td>{{ form.usuario() }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.email.label}}</td>
-                <td>{{ form.email() }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.contrasena.label}}</td>
-                <td>{{ form.contrasena() }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.confirmar.label}}</td>
-                <td>{{ form.confirmar() }}</td>
-            </tr>
+            {{ render_input(form.usuario) }}
+            {{ render_input(form.email) }}
+            {{ render_input(form.contrasena) }}
+            {{ render_input(form.confirmar) }}
+            {{ render_input(form.about) }}
             <tr>
                 <td><button type="submit" aria-label="Enviar formulario">Enviar</button></td>
             </tr>
