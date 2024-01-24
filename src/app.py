@@ -4,7 +4,8 @@ import os
 import psycopg2
 from dotenv import load_dotenv
 from flask import Flask, redirect, url_for, render_template, request
-from wtforms import Form, StringField, PasswordField, validators
+from wtforms import Form, StringField, PasswordField
+from wtforms.validators import Length, EqualTo
 
 app = Flask(__name__)
 load_dotenv()
@@ -17,23 +18,26 @@ class RegistrationForm(Form):
     """Form for register"""
     usuario = StringField(
         "Nombre de usuario", [
-            validators.Length(min=4, max=30)
+            Length(min=4, max=30)
         ]
     )
     email = StringField(
         "Email", [
-            validators.Length(min=6, max=40)
+            Length(min=6, max=40)
         ]
     )
     contrasena = PasswordField(
         "Contraseña", [
-            validators.Length(min=8, max=72),
-            validators.EqualTo(
-                'confirmar', message='Las contraseñas deben ser iguales'
-            )
+            Length(min=8, max=72),
         ]
     )
-    confirmar = PasswordField("Repetir contraseña")
+    confirmar = PasswordField(
+        "Repetir contraseña", {
+            EqualTo(
+                'contrasena ', message='Las contraseñas deben ser iguales'
+            )
+        }
+    )
 
 
 def titulo_a_url(titulo):
