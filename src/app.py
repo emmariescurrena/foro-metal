@@ -192,14 +192,15 @@ class LoginForm(Form):
     )
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
     """
     Renders a template for login
     Returns a string
     """
     form = LoginForm(request.form)
-
+    if request.method == "POST" and form.validate():
+        return redirect(url_for("logged"))
     return render_template("login.html", form=form)
 
 
@@ -209,7 +210,6 @@ def logged():
     Returns a page to confirm user's login
     Returns a string
     """
-
     return "<p>Logged sucessfully</p>"
 
 
