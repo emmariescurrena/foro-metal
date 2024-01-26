@@ -118,8 +118,8 @@ def user(username=None):
     return render_template("usuario.html", info_user=info_user)
 
 
-class RegistrationForm(Form):
-    """Form for register"""
+class SignUpForm(Form):
+    """Form for sign up"""
     user = StringField(
         "Nombre de usuario*",
         validators=[
@@ -158,26 +158,26 @@ class RegistrationForm(Form):
     )
 
 
-@app.route("/register", methods=["GET", "POST"])
+@app.route("/signup", methods=["GET", "POST"])
 def register():
     """
-    Renders and returns template for register
+    Renders and returns template for sign up
     Returns a string
     """
 
-    form = RegistrationForm(request.form)
+    form = SignUpForm(request.form)
     if request.method == "POST" and form.validate():
-        return redirect(url_for("registered"))
-    return render_template("register.html", form=form)
+        return redirect(url_for("signed"))
+    return render_template("signup.html", form=form)
 
 
-@app.route("/registered")
-def registered():
+@app.route("/signed")
+def signed():
     """
-    Renders a page to confirm user's register
+    Renders a page to confirm user's sign up
     Returns a string
     """
-    return "<p>Registered sucessfully</p>"
+    return "<p>Signed up sucessfully</p>"
 
 
 class LoginForm(Form):
