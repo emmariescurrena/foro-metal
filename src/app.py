@@ -11,16 +11,15 @@ from wtforms.validators import Length, EqualTo, InputRequired
 app = Flask(__name__)
 load_dotenv()
 
-with open('sql.txt', 'r', encoding="UTF-8") as file:
-    sql_arr = file.read().splitlines()
 
-
-def titulo_a_url(titulo):
-    """Simplfies the topic's name to be saved as an url"""
+def title_to_url(title):
+    """
+    Simplifies the topic's name to be saved as an url
+    Returns a string
+    """
     url = ""
-    titulo = titulo.rstrip()
-    titulo = titulo.lstrip()
-    for char in titulo:
+    title = title.rstrip().lstrip()
+    for char in title:
         if char in "aeiouáéíóúbcdfghjklmnñpqrstvwxyz":
             url += char
         elif char in "AEIOUÁÉÍÓÚBCDFGHJKLMNÑPQRSTVWXYZ":
@@ -31,7 +30,10 @@ def titulo_a_url(titulo):
 
 
 def get_db_connection():
-    """Get connection to 'foro_de_metal' database"""
+    """
+    Get connection to 'foro_de_metal' database
+    Returns an object
+    """
     conn = psycopg2.connect(
         host="localhost",
         database="foro_de_metal",
@@ -43,67 +45,82 @@ def get_db_connection():
 
 @app.route("/")
 def root():
-    """Redirects from root to index"""
+    """
+    Redirects from root to index
+    Returns a response
+    """
     return redirect(url_for('index'))
 
 
 @app.route("/topicos")
 def index():
-    """Connects to DB and renders template for index"""
+    """
+    Connects to DB and renders and returns template for index
+    Returns a string
+    """
     conn = get_db_connection()
     cur = conn.cursor()
 
-    sql = sql_arr[0]
+    sql = """SELECT top.url, top.name, top.text, us.name, top.date FROM topics top
+    INNER JOIN users us ON top.id_user = us.id;"""
     cur.execute(sql)
-    topicos = cur.fetchall()
+    topics = cur.fetchall()
 
     cur.close()
     conn.close()
 
-    return render_template("index.html", topicos=topicos)
+    return render_template("index.html", topics=topics)
 
 
 @app.route("/topicos/<url>")
-def topico(url=None):
-    """Connects to DB and renders template for topico"""
+def topic(url=None):
+    """
+    Connects to DB and renders and returns template for topico
+    Returns a string
+    """
     conn = get_db_connection()
     cur = conn.cursor()
 
-    sql = f"{sql_arr[1]} '{url}';"
+    sql = f"""SELECT top.name, top.text, us.name, top.date, us.about, top.id FROM
+    topics top INNER JOIN users us ON top.id_user = us.id WHERE top.url = '{url}';"""
     cur.execute(sql)
-    info_topico = cur.fetchone()
-    id_topico = info_topico[5]
+    info_topic = cur.fetchone()
+    id_topic = info_topic[5]
 
-    sql = f"{sql_arr[2]} '{id_topico}';"
+    sql = f"""SELECT re.text, us.name, re.date, us.about FROM replies re INNER
+    JOIN users us ON re.id_user = us.id WHERE re.id_topic = '{id_topic}';"""
     cur.execute(sql)
-    respuestas = cur.fetchall()
+    replies = cur.fetchall()
 
     cur.close()
     conn.close()
 
-    return render_template("topico.html", info_topico=info_topico, respuestas=respuestas)
+    return render_template("topico.html", info_topic=info_topic, replies=replies)
 
 
-@app.route("/usuario/<nombre_usuario>")
-def usuario(nombre_usuario=None):
-    """Connects to DB and renders template for usuario"""
+@app.route("/usuario/<username>")
+def user(username=None):
+    """
+    Connects to DB and renders and template for usuario
+    Returns a string
+    """
     conn = get_db_connection()
     cur = conn.cursor()
 
-    sql = f"{sql_arr[3]} '{nombre_usuario}';"
+    sql = f"""SELECT name, img_id, since_date, about, topics_created,
+    replies_writed FROM users WHERE name = '{username}';"""
     cur.execute(sql)
-    info_usuario = cur.fetchone()
-    print(info_usuario)
+    info_user = cur.fetchone()
 
     cur.close()
     conn.close()
 
-    return render_template("usuario.html", info_usuario=info_usuario)
+    return render_template("usuario.html", info_user=info_user)
 
 
 class RegistrationForm(Form):
     """Form for register"""
-    usuario = StringField(
+    user = StringField(
         "Nombre de usuario*",
         validators=[
             InputRequired(),
@@ -111,25 +128,25 @@ class RegistrationForm(Form):
         ]
     )
     email = StringField(
-        "Email*",
+        "Correo electrónico*",
         validators=[
             InputRequired(),
             Length(min=6, max=40)
         ]
     )
-    contrasena = PasswordField(
+    password = PasswordField(
         "Contraseña*",
         validators=[
             InputRequired(),
             Length(min=8, max=72),
         ]
     )
-    confirmar = PasswordField(
-        "Repetir contraseña*",
+    confirm = PasswordField(
+        "Confirmar contraseña*",
         validators=[
             InputRequired(),
             EqualTo(
-                'contrasena',
+                'password',
                 message='Las contraseñas deben ser iguales'
             )
         ]
@@ -141,22 +158,60 @@ class RegistrationForm(Form):
     )
 
 
-@app.route("/registro", methods=["GET", "POST"])
-def registro():
-    """Renders template for registro"""
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    """
+    Renders and returns template for register
+    Returns a string
+    """
 
     form = RegistrationForm(request.form)
     if request.method == "POST" and form.validate():
-        print(form.confirmar.data)
-    return render_template("registro.html", form=form)
+        return redirect(url_for("registered"))
+    return render_template("register.html", form=form)
+
+
+@app.route("/registered")
+def registered():
+    """
+    Renders a page to confirm user's register
+    Returns a string
+    """
+    return "<p>Registered sucessfully</p>"
+
+
+class LoginForm(Form):
+    """Form for login"""
+    email_or_username = StringField(
+        "Nombre de usuario o correo electrónico",
+        validators=[InputRequired()]
+    )
+    password = PasswordField(
+        "Contraseña",
+        validators=[InputRequired()]
+    )
 
 
 @app.route("/login")
 def login():
-    """Renders template for login"""
+    """
+    Renders a template for login
+    Returns a string
+    """
+    form = LoginForm(request.form)
 
-    return render_template("login.html")
+    return render_template("login.html", form=form)
+
+
+@app.route("/logged")
+def logged():
+    """
+    Returns a page to confirm user's login
+    Returns a string
+    """
+
+    return "<p>Logged sucessfully</p>"
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug='DEBUG')

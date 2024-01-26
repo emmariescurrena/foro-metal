@@ -19,13 +19,13 @@
     {% endmacro %}
     <form class="form" method="POST">
         <table>
-            {{ render_input(form.usuario) }}
+            {{ render_input(form.user) }}
             {{ render_input(form.email) }}
-            {{ render_input(form.contrasena) }}
-            {{ render_input(form.confirmar) }}
+            {{ render_input(form.password) }}
+            {{ render_input(form.confirm) }}
             {{ render_input(form.about) }}
             <tr>
-                <td><button type="submit" aria-label="Enviar formulario">Enviar</button></td>
+                <td><button type="submit" aria-label="Registrarse">Registrarse</button></td>
             </tr>
         </table>
     </form>

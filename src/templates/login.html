@@ -1,0 +1,29 @@
+{% extends "base.html" %} 
+{% block title %}Inicio de sesión | {% endblock %}
+{% block main %}
+    <h1>Inicio de sesión</h1>
+
+    {% macro render_input(field, showErrors="true") %}
+        <tr>
+            <td>{{ field.label }}</td>
+            <td>{{ field(**kwargs)|safe }}
+            {% if showErrors=="true" and field.errors %}
+                <ul class="errors">
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            </td>
+        </tr> 
+    {% endmacro %}
+    <form class="form" method="POST">
+        <table>
+            {{ render_input(form.email_or_username) }}
+            {{ render_input(form.password) }}
+            <tr>
+                <td><button type="submit" aria-label="Iniciar sesión">Iniciar sesión</button></td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}
