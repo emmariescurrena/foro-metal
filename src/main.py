@@ -121,7 +121,7 @@ def topic(url=None):
 @main.route("/usuario/<username>")
 def user(username=None):
     """
-    Connects to DB and renders and template for usuario
+    Connects to DB and renders and returns template for usuario
     Returns a string
     """
     conn = get_db_connection()
@@ -140,3 +140,12 @@ def user(username=None):
     conn.close()
 
     return render_template("usuario.html", info_user=info_user)
+
+
+@main.route("/perfil")
+def profile():
+    """
+    Renders and returns template for perfil
+    """
+
+    return render_template("perfil.html")

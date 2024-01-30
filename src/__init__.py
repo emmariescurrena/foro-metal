@@ -22,7 +22,7 @@ def create_app():
     password = os.getenv("DB_PASSWORD")
     db_name = os.getenv("DB_NAME")
     app.config["SECRET_KEY"] = "secret"
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{username}:{password}@localhost:5432/{db_name}"
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{username}:{password}@localhost:5432/{db_name}"  # pylint: disable=line-too-long
 
     db.init_app(app)
 

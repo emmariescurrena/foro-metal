@@ -9,14 +9,9 @@
     <h1 class="title">{{ info_user[0]}}</h1>
     <p class="since">Desde {{ info_user[2] }}</p>
     <p class="about">{{ info_user[3] }}</p>
+    {% from "macros.jinja" import render_contribution %}
     <div class="contributions">
-        <div class="contribution">
-            <p class="contribution-quantity">{{ info_user[4] }}</p>
-            <p class="contribution-what">Tópicos creados</p>
-        </div>
-        <div class="contribution">
-            <p class="contribution-quantity">{{ info_user[5] }}</p>
-            <p class="contribution-what">Respuestas escritas</p>
-        </div>
+        {{ render_contribution( info_user[4] , "Tópicos creados") }}
+        {{ render_contribution( info_user[5] , "Respuestas escritas") }}
     </div>
 {% endblock %}

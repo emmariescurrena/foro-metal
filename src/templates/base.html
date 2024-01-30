@@ -8,9 +8,23 @@
     <title>{% block title %}{% endblock %}Foro de Metal</title>
 </head>
 <body>
-    <header>
-        <p><a href="{{ url_for('main.index') }}">Foro de metal</a></p>
-    </header>
+    <div id="navbar" class="navbar-div">
+        <a href="{{ url_for('main.index') }}" class="navbar-item">
+            Inicio
+        </a>
+        <a href="{{ url_for('auth.signup') }}" class="navbar-item">
+            Registrarse
+        </a>
+        <a href="{{ url_for('auth.login') }}" class="navbar-item">
+            Iniciar sesión
+        </a>
+        <a href="{{ url_for('main.profile') }}" class="navbar-item">
+            Perfil
+        </a>
+        <a href="{{ url_for('auth.logout') }}" class="navbar-item">
+            Cerrar sesión
+        </a>
+    </div>
     <main>
         {% block main %}{% endblock %}
     </main>

@@ -1,32 +1,48 @@
-    {% extends "base.html" %} 
+{% extends "base.html" %} 
 {% block title %}Registrarse | {% endblock %}
 {% block main %}
     <h1>Registrarse</h1>
 
-    {% macro render_input(field, showErrors="true") %}
-        <tr>
-            <td>{{ field.label }}</td>
-            <td>{{ field(**kwargs)|safe }}
-            {% if showErrors=="true" and field.errors %}
-                <ul class="errors">
-                    {% for error in field.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-            </td>
-        </tr> 
-    {% endmacro %}
-    <form class="form" method="POST">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash-message">
+            {{ messages[0] }}. Ir a <a href="{{ url_for('auth.login') }}"> Iniciar sesión</a>.
+        </div>
+    {% endif %}
+    {% endwith %}
+
+    {% from "macros.jinja" import render_input %}
+    <form method="POST" action="/signup">
         <table>
-            {{ render_input(form.user) }}
+            <tr><td>{{ form.csrf_token }}</td></tr>
+            {{ render_input(form.name) }}
             {{ render_input(form.email) }}
             {{ render_input(form.password) }}
             {{ render_input(form.confirm) }}
+            <tr>
+                <td>
+                    {{ form.avatar_id.label }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% for subfield in form.avatar_id %}
+                        {{ subfield }}
+                        <label for="{{ subfield.id }}">
+                            <img src="{{ url_for(
+                                        'static',
+                                        filename='img/' + subfield.data + '.svg') }}"
+                            />
+                        </label>
+                    {% endfor %}
+                </td>
+            </tr>
             {{ render_input(form.about) }}
             <tr>
-                <td><button type="submit" aria-label="Registrarse">Registrarse</button></td>
-            </tr>
+                <td>
+                    <input type="submit" aria-label="Registrarse" value="Registrarse">
+                </td>
+            </tr>  
         </table>
     </form>
 {% endblock %}
