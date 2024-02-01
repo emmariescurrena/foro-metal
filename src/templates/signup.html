@@ -18,6 +18,12 @@
             {{ render_input(form.name) }}
             {{ render_input(form.email) }}
             {{ render_input(form.password) }}
+            <tr>
+                <td>
+                    La contraseña necesita tener al menos 8 caracteres, 1 letra
+                    minúscula, 1 letra mayúscula, 1 número y un carácter especial
+                </td>
+            </tr>
             {{ render_input(form.confirm) }}
             <tr>
                 <td>
