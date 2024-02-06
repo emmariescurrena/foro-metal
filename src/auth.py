@@ -4,7 +4,7 @@ import re
 from flask import Blueprint, redirect, url_for, render_template, request, flash
 from sqlalchemy import select
 import pyscrypt
-from email_validator import validate_email
+from pyisemail import is_email
 from .auth_classes import SignUpForm, LoginForm
 from .models import User
 from . import db
@@ -31,13 +31,25 @@ def name_registered(name):
 def valid_email_format(string):
     """Returns True if string has email format"""
 
-    return re.fullmatch(regex_email, string)
+    if re.fullmatch(regex_email, string) and is_email(string):
+        return True
+    return False
+
+
+def valid_email_dns(string):
+    """Returns True if string has email format and direction is valid"""
+
+    if re.fullmatch(regex_email, string) and is_email(string, check_dns=True):
+        return True
+    return False
 
 
 def valid_password_format(string):
     """Returns True if string has password required requisites"""
 
-    return re.fullmatch(regex_password, string)
+    if re.fullmatch(regex_password, string):
+        return True
+    return False
 
 
 def verify_signup_credentials(name, email, password):
@@ -47,7 +59,7 @@ def verify_signup_credentials(name, email, password):
         flash("Nombre de usuario ocupado")
         return redirect(url_for("auth.signup"))
 
-    if valid_email_format(name):
+    if valid_email_dns(name):
         flash("Por favor, no use un correo electrónico como nombre de usuario")
         return redirect(url_for("auth.signup"))
 
@@ -172,7 +184,7 @@ def verify_credentials_with_name(name, password):
 def verify_credentials(name_or_email, password):
     """Verify user credentials with database"""
 
-    if validate_email(name_or_email, check_deliverability=False):
+    if valid_email_format(name_or_email):
         return verify_credentials_with_email(name_or_email, password)
 
     return verify_credentials_with_name(name_or_email, password)

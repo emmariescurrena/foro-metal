@@ -6,7 +6,7 @@
     {% with messages = get_flashed_messages() %}
     {% if messages %}
         <div class="flash-message">
-            {{ messages[0] }}. Ir a <a href="{{ url_for('auth.login') }}"> Iniciar sesión</a>.
+            {{ messages[0] }}.
         </div>
     {% endif %}
     {% endwith %}

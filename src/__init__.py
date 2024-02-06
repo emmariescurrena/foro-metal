@@ -1,13 +1,16 @@
 """Setup basic structure for app"""
 
 import os
-from dotenv import load_dotenv
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import DeclarativeBase
 
 
-db = SQLAlchemy()
-load_dotenv()
+class Base(DeclarativeBase):
+    pass
+
+
+db = SQLAlchemy(model_class=Base)
 
 
 def create_app():
@@ -17,12 +20,7 @@ def create_app():
     """
 
     app = Flask(__name__)
-
-    username = os.getenv("DB_USERNAME")
-    password = os.getenv("DB_PASSWORD")
-    db_name = os.getenv("DB_NAME")
-    app.config["SECRET_KEY"] = "secret"
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{username}:{password}@localhost:5432/{db_name}"  # pylint: disable=line-too-long
+    app.config.from_object("config")
 
     db.init_app(app)
 

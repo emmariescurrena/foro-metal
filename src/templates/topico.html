@@ -1,30 +1,30 @@
 {% extends "base.html" %}
-{% block title %}{{ info_topic[0] }} | {% endblock %}
+{% block title %}{{ info_topic.name }} | {% endblock %}
 {% block main %}
     <article class="info-topic">
-        <h1 class="title">{{ info_topic[0] }}</h1>
-        <p class="text">{{ info_topic[1] }}</p>
+        <h1 class="title">{{ info_topic.name }}</h1>
+        <p class="text">{{ info_topic.text }}</p>
         <div class="div-user">
-            <img  class="avatar" src="" alt="avatar-usuario-{{ info_topic[2] }}">
-            {# Username and date #}
+            <img class="avatar" src="" alt="avatar-usuario-{{ info_topic.user_name }}">
             <p class="username">
-                <a href="{{ url_for('main.user', username=info_topic[2]) }}">@{{ info_topic[2] }}</a>,
-                {{ info_topic[3] }}
+                <a href="{{ url_for('main.user', username=info_topic.user_name) }}">@{{ info_topic[2] }}</a>,
+                {{ info_topic.date }}
             </p>
-            <p class="about"><i>{{ info_topic[4] }}</i></p>
+            <p class="about"><i>{{ info_topic.user_about }}</i></p>
         </div>
     </article>
     {% for reply in replies %}
         <article class="reply">
-            <p class="text">{{ reply[0]}}</p>
+            <p class="text">{{ reply.text }}</p>
             <div class="div-user">
-                <img class="avatar" src="" alt="avatar-usuario-{{ reply[1] }}">
-                {# Username and date #}
+                <img class="avatar" src="" alt="avatar-usuario-{{ reply.user_name }}">
                 <p>
-                    <a href="{{ url_for('main.user', username=reply[1]) }}">
-                    @{{ reply[1] }}</a>, {{ reply[2] }}
+                    <a href="{{ url_for('main.user', username=user_name) }}">
+                        @{{ reply.user_name }}
+                    </a>
+                    , {{ reply.date }}
                 </p>
-                <p class="about"><i>{{ reply[3] }}</i></p>
+                <p class="about"><i>{{ reply.user_about }}</i></p>
             </div>
         </article>
     {% endfor %}

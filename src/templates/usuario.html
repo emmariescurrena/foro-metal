@@ -1,17 +1,12 @@
 {% extends "base.html"%}
-{% block title %} {{ info_user[0] }} {% endblock %}
+{% block title %} {{ info_user.name }} {% endblock %}
 {% block main %}
     <img 
         class="avatar"
-        src="{{ url_for('static', filename='img/' + info_user[1] + '.svg') }}"
-        alt="avatar-{{ info_user[0] }}"
+        src="{{ url_for('static', filename='img/' ~ info_user.avatar_id ~ '.svg') }}"
+        alt="avatar-{{ info_user.name }}"
     >           
-    <h1 class="title">{{ info_user[0]}}</h1>
-    <p class="since">Desde {{ info_user[2] }}</p>
-    <p class="about">{{ info_user[3] }}</p>
-    {% from "macros.jinja" import render_contribution %}
-    <div class="contributions">
-        {{ render_contribution( info_user[4] , "Tópicos creados") }}
-        {{ render_contribution( info_user[5] , "Respuestas escritas") }}
-    </div>
+    <h1 class="title">{{ info_user.name}}</h1>
+    <p class="since">Desde {{ info_user.since_date }}</p>
+    <p class="about">{{ info_user.about }}</p>
 {% endblock %}

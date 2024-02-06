@@ -4,15 +4,20 @@
     <h1>Tópicos</h1>
     {% for topic in topics %}
         <article class="title">
-            <a href="{{ url_for ('main.topic', url=topic[0]) }}">
-                <h2 class="title">{{ topic[1] }}</h2>
-                {% if topic[2]|length > 100 %}
-                    <p class="text">{{ topic[2][:100] }}...</p>
+            <a href="{{ url_for ('main.topic', url=topic.url) }}">
+                <h2 class="title">{{ topic.name }}</h2>
+                {% if topic.text|length > 150 %}
+                    <p class="text">{{ topic.text[:150] }}...</p>
                 {% else %}
-                    <p class="text">{{ topic[2] }}</p>
+                    <p class="text">{{ topic.text }}</p>
                 {% endif %}
-                <p class="username">@{{ topic[3] }}, {{ topic[4] }}</p>
             </a>
+            <p class="username">
+                <a href="{{ url_for('main.user', username=topic.user_name) }}">
+                    @{{ topic.user_name }}
+                </a>
+                , {{ topic.date }}
+            </p> 
         </article>
     {% endfor %}
 {% endblock %}
