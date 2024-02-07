@@ -1,10 +1,9 @@
 """Database models"""
 
-from secrets import token_hex
 from datetime import date
 from typing import Optional
-import pyscrypt
-from sqlalchemy import String, ForeignKey
+from bcrypt import gensalt, hashpw
+from sqlalchemy import String, ForeignKey, LargeBinary
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from . import db
 
@@ -34,8 +33,7 @@ class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
     email: Mapped[str] = mapped_column(String(40))
-    salt: Mapped[str] = mapped_column(String(16))
-    password: Mapped[str] = mapped_column(String)
+    password = mapped_column(LargeBinary())
     since_date: Mapped[date]
     about: Mapped[Optional[str]] = mapped_column(String(256))
     avatar_id: Mapped[int]
@@ -43,13 +41,8 @@ class User(db.Model):
     def __init__(self, name, email, password, about, avatar_id):
         self.name = name
         self.email = email
-        self.salt = token_hex(8)
-        self.password = pyscrypt.hash(password=password.encode(),
-                                      salt=self.salt.encode(),
-                                      N=2048,
-                                      r=1,
-                                      p=1,
-                                      dkLen=256)
+        salt = gensalt(15)
+        self.password = hashpw(password.encode("utf-8"), salt)
         self.avatar_id = int(avatar_id)
         self.about = about
         self.since_date = date.today()

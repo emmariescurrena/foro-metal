@@ -7,7 +7,7 @@
         <div class="div-user">
             <img class="avatar" src="" alt="avatar-usuario-{{ info_topic.user_name }}">
             <p class="username">
-                <a href="{{ url_for('main.user', username=info_topic.user_name) }}">@{{ info_topic[2] }}</a>,
+                <a href="{{ url_for('main.user', username=info_topic.user_name) }}">@{{ info_topic.user_name }}</a>,
                 {{ info_topic.date }}
             </p>
             <p class="about"><i>{{ info_topic.user_about }}</i></p>
@@ -19,7 +19,7 @@
             <div class="div-user">
                 <img class="avatar" src="" alt="avatar-usuario-{{ reply.user_name }}">
                 <p>
-                    <a href="{{ url_for('main.user', username=user_name) }}">
+                    <a href="{{ url_for('main.user', username=reply.user_name) }}">
                         @{{ reply.user_name }}
                     </a>
                     , {{ reply.date }}

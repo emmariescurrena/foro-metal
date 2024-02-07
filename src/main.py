@@ -42,11 +42,10 @@ def index():
     return render_template("index.html", topics=topics)
 
 
-@main.route("/topicos/<url>")
-def topic(url=None):
+def get_db_topic_page_topic(url):
     """
-    Connects to DB and renders and returns template for topico
-    Returns a string
+    Get required data from db to load a topic's page main topic
+    Returns a sql.Row instance
     """
 
     stmt = (
@@ -63,7 +62,15 @@ def topic(url=None):
     )
     result = db.session.execute(stmt)
     info_topic = result.one()
-    id_topic = info_topic.id
+
+    return info_topic
+
+
+def get_db_topic_page_replies(id_topic):
+    """
+    Get required data from db to load a topic's page replies
+    Returns a list
+    """
 
     stmt = (
         select(
@@ -78,14 +85,27 @@ def topic(url=None):
     result = db.session.execute(stmt)
     replies = result.all()
 
+    return replies
+
+
+@main.route("/topicos/<url>")
+def topic(url=None):
+    """
+    Renders template for topico
+    Returns a string
+    """
+
+    info_topic = get_db_topic_page_topic(url)
+    id_topic = info_topic.id
+    replies = get_db_topic_page_replies(id_topic)
+
     return render_template("topico.html", info_topic=info_topic, replies=replies)
 
 
-@main.route("/usuario/<username>")
-def user(username=None):
+def get_db_user_page(username):
     """
-    Connects to DB and renders and returns template for usuario
-    Returns a string
+    Get required data from db to load a user page
+    Returns a list
     """
 
     stmt = (
@@ -100,13 +120,15 @@ def user(username=None):
     result = db.session.execute(stmt)
     info_user = result.one()
 
+    return info_user
+
+
+@main.route("/usuario/<username>")
+def user(username=None):
+    """
+    Renders and returns template for usuario
+    Returns a string
+    """
+
+    info_user = get_db_user_page(username)
     return render_template("usuario.html", info_user=info_user)
-
-
-@main.route("/perfil")
-def profile():
-    """
-    Renders and returns template for perfil
-    """
-
-    return render_template("perfil.html")
