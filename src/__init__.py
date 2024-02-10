@@ -3,11 +3,13 @@
 import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 from sqlalchemy.orm import DeclarativeBase
 
 
 class Base(DeclarativeBase):
-    pass
+    """Base for db models"""
+    pass  # pylint: disable=unnecessary-pass
 
 
 db = SQLAlchemy(model_class=Base)
@@ -24,7 +26,18 @@ def create_app():
 
     db.init_app(app)
 
-    # pylint: disable=import-outside-toplevel
+    login_manager = LoginManager()
+    login_manager.login_view = "auth.login"
+    login_manager.init_app(app)
+
+
+# pylint: disable=import-outside-toplevel
+
+    from .models import User
+
+    @login_manager.user_loader
+    def load_user(id_user):
+        return User.query.get(int(id_user))
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)

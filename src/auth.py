@@ -2,13 +2,12 @@
 
 import re
 from flask import Blueprint, redirect, url_for, render_template, request, flash
-from sqlalchemy import select
+from flask_login import login_user, login_required, logout_user
 from bcrypt import checkpw
 from pyisemail import is_email
 from .auth_classes import SignUpForm, LoginForm
 from .models import User
 from . import db
-
 
 auth = Blueprint("auth", __name__)
 
@@ -25,7 +24,7 @@ def email_registered(email):
 
 
 def name_registered(name):
-    """Returns True if user with given email exist"""
+    """Returns True if user with given name exist"""
 
     return True if User.query.filter_by(name=name).first() else False
 
@@ -73,7 +72,7 @@ def verify_signup_credentials(name, email, password):
 
 
 def insert_user_db(name, email, password, avatar_id, about):
-    """Inserts user in users table"""
+    """Inserts new user in users table"""
 
     new_user = User(name=name,
                     email=email,
@@ -83,6 +82,34 @@ def insert_user_db(name, email, password, avatar_id, about):
 
     db.session.add(new_user)
     db.session.commit()
+
+
+def get_user_with_email(email):
+    """Get user data with email given"""
+
+    return User.query.filter_by(email=email).first()
+
+
+def get_user_with_name(name):
+    """Get user data with name given"""
+
+    return User.query.filter_by(name=name).first()
+
+
+def verify_user_exists_with_email(email):
+    """Verifies login credentials with given email"""
+
+    if not email_registered(email):
+        flash("El correo electrónico no se encuentra registrado")
+        return redirect(url_for("auth.login"))
+
+
+def verify_user_exists_with_name(name):
+    """Verifies login credentials with given name"""
+
+    if not name_registered(name):
+        flash("El nombre de usuario no se encuentra registrado")
+        return redirect(url_for("auth.login"))
 
 
 @auth.route("/signup", methods=["GET", "POST"])
@@ -112,48 +139,6 @@ def signup():
     return render_template("signup.html", form=form)
 
 
-def get_user_credentials(name_or_email):
-    """Get user data with email inserted"""
-
-    stmt = (
-        select(User.password)
-        .filter((User.name == name_or_email) | (User.email == name_or_email))
-    )
-    result = db.session.execute(stmt)
-    hashed_password = result.one().password
-
-    return hashed_password
-
-
-def verify_password(password, hashed_password):
-    """
-    Verifies if password inserted is equal to hashed stored password and
-    redirects to corresponding page
-    """
-
-    if not checkpw(password.encode("utf8"), hashed_password):
-        flash("Contraseña incorrecta")
-        return redirect(url_for("auth.login"))
-
-
-def verify_login_credentials(name_or_email, password):
-    """Verifies user credentials with database"""
-
-    if valid_email_format(name_or_email):
-        if not email_registered(name_or_email):
-            flash("El correo electrónico no se encuentra registrado")
-            return redirect(url_for("auth.login"))
-
-    else:
-        if not name_registered(name_or_email):
-            flash("El nombre de usuario no se encuentra registrado")
-            return redirect(url_for("auth.login"))
-
-    hashed_password = get_user_credentials(name_or_email)
-
-    return verify_password(password, hashed_password)
-
-
 @auth.route("/login", methods=["GET", "POST"])
 def login():
     """
@@ -166,31 +151,39 @@ def login():
 
         name_or_email = request.form.get("name_or_email")
         password = request.form.get("password")
+        remember = True if request.form.get("remember") else False
 
-        error_response = verify_login_credentials(name_or_email, password)
-        if error_response:
-            return error_response
+        if valid_email_format(name_or_email):
+            email = name_or_email
+            user_not_found_response = verify_user_exists_with_email(email)
+            user = get_user_with_email(email)
+        else:
+            name = name_or_email
+            user_not_found_response = verify_user_exists_with_name(name)
+            user = get_user_with_name(name)
 
+        if user_not_found_response:
+            return user_not_found_response
+
+        hashed_password = user.password
+        if not checkpw(password.encode("utf8"), hashed_password):
+            flash("Contraseña incorrecta")
+            return redirect(url_for("auth.login"))
+
+        login_user(user, remember=remember)
         return redirect(url_for("main.index"))
 
     return render_template("login.html", form=form)
 
 
-@auth.route("/perfil")
-def profile():
-    """
-    Renders template for perfil
-    Returns a string
-    """
-
-    return render_template("perfil.html")
-
-
+@auth
 @auth.route("/logout")
+@login_required
 def logout():
     """
     Returns a page to confirm user logout
     Returns a response
     """
 
-    return "Logout"
+    logout_user()
+    return redirect(url_for("main.index"))

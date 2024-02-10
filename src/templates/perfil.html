@@ -1,5 +1,12 @@
-{% extends "base.html" %}
-{% block title %}Mi perfil | {% endblock %}
+{% extends "base.html"%}
+{% block title %} {{ current_user.name }} {% endblock %}
 {% block main %}
-
+    <img 
+        class="avatar"
+        src="{{ url_for('static', filename='img/' ~ current_user.avatar_id ~ '.svg') }}"
+        alt="avatar-{{ current_user.name }}"
+    >           
+    <h1 class="title">{{ current_user.name}}</h1>
+    <p class="since">Desde {{ current_user.since_date }}</p>
+    <p class="about">{{ current_user.about }}</p>
 {% endblock %}

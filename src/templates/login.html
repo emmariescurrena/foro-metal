@@ -17,6 +17,7 @@
             <tr><td>{{ form.csrf_token }}</td></tr>
             {{ render_input(form.name_or_email) }}
             {{ render_input(form.password) }}
+            {{ render_input(form.remember, vertical=False) }}
             <tr>
                 <td><button type="submit" aria-label="Iniciar sesión">Iniciar sesión</button></td>
             </tr>

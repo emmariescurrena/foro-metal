@@ -5,6 +5,7 @@ from typing import Optional
 from bcrypt import gensalt, hashpw
 from sqlalchemy import String, ForeignKey, LargeBinary
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from flask_login import UserMixin
 from . import db
 
 
@@ -25,7 +26,7 @@ def title_to_url(title):
     return url
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """User model"""
 
     __tablename__ = "users"
@@ -48,7 +49,7 @@ class User(db.Model):
         self.since_date = date.today()
 
 
-class Topic(db.Model):
+class Topic(UserMixin, db.Model):
     """Topic model"""
 
     __tablename__ = "topics"

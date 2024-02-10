@@ -2,6 +2,7 @@
 
 from dotenv import load_dotenv
 from flask import Blueprint, redirect, url_for, render_template
+from flask_login import login_required, current_user
 from sqlalchemy import select
 from .models import Topic, User, Reply
 from . import db
@@ -121,6 +122,17 @@ def get_db_user_page(username):
     info_user = result.one()
 
     return info_user
+
+
+@main.route("/perfil")
+@login_required
+def profile():
+    """
+    Renders template for perfil
+    Returns a string
+    """
+
+    return render_template("perfil.html", name=current_user.name)
 
 
 @main.route("/usuario/<username>")
