@@ -30,8 +30,7 @@ def create_app():
     login_manager.login_view = "auth.login"
     login_manager.init_app(app)
 
-
-# pylint: disable=import-outside-toplevel
+    # pylint: disable=import-outside-toplevel
 
     from .models import User
 

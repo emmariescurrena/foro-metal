@@ -71,6 +71,28 @@ class Topic(UserMixin, db.Model):
         self.url = title_to_url(name)
 
 
+class Tag(db.Model):
+    """Tag model"""
+
+    __tablename__ = "tags"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    tag: Mapped[str] = mapped_column(String(50))
+
+
+class TopicTag(db.Model):
+    """Topic-Tag model"""
+
+    __tablename__ = "topic-tag"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    id_topic: Mapped[int] = mapped_column(ForeignKey("topics.id"))
+    id_tag: Mapped[int] = mapped_column(ForeignKey("tags.id"))
+
+    topic = relationship("Topic", foreign_keys="TopicTag.id_topic")
+    tag = relationship("Tag", foreign_keys="TopicTag.id_tag")
+
+
 class Reply(db.Model):
     """Reply model"""
 

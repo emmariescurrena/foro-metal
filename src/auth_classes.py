@@ -1,8 +1,8 @@
-"""Froms for auth"""
+"""Forms for auth"""
 
 from wtforms import StringField, PasswordField, RadioField, BooleanField
 from wtforms.widgets import TextArea
-from wtforms.validators import Length, EqualTo, InputRequired
+from wtforms.validators import Length, EqualTo, InputRequired, ValidationError
 from flask_wtf import FlaskForm
 
 
@@ -37,33 +37,5 @@ class LoginForm(FlaskForm):
     )
     remember = BooleanField(
         "Recordarme",
-        default=""
-    )
-
-
-class CreateTopicForm(FlaskForm):
-    """Form for create topic"""
-
-    title = StringField(
-        "Título del tópico",
-        validators=[InputRequired(), Length(max=256)]
-    )
-    text = StringField(
-        "Texto",
-        validators=[InputRequired(), Length(max=10000)],
-        widget=TextArea()
-    )
-    tags = StringField(
-        "Etiquetas para ayudar a otros a encontrar tu tópico",
-        render_kw={"placeholder": "Ej.: thrash-metal guitar black-sabbath"}
-    )
-
-
-class CreateReplyForm(FlaskForm):
-    """Form for create reply"""
-
-    text = StringField(
-        "Respuesta",
-        validators=[InputRequired(), Length(max=10000)],
-        widget=TextArea()
+        default=False
     )

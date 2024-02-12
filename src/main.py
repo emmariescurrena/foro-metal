@@ -1,9 +1,10 @@
 """Topicos and usuario pages"""
 
 from dotenv import load_dotenv
-from flask import Blueprint, redirect, url_for, render_template
+from flask import Blueprint, redirect, url_for, render_template, request
 from flask_login import login_required, current_user
 from sqlalchemy import select
+from .main_classes import CreateTopicForm, CreateReplyForm
 from .models import Topic, User, Reply
 from . import db
 
@@ -138,9 +139,23 @@ def profile():
 @main.route("/usuario/<username>")
 def user(username=None):
     """
-    Renders and returns template for usuario
+    Renders template for usuario
     Returns a string
     """
 
     info_user = get_db_user_page(username)
     return render_template("usuario.html", info_user=info_user)
+
+
+@main.route("/crear-tópico")
+def create_topic():
+    """
+    Renders template for create topic
+    Returns a string
+    """
+
+    form = CreateTopicForm(request.form)
+    if form.validate_on_submit():
+        pass
+
+    return render_template("crear_tópico.html", form=form)

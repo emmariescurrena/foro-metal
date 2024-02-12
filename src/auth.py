@@ -48,7 +48,10 @@ def valid_password_format(string):
 
 
 def verify_signup_credentials(name, email, password):
-    """Verifies validity of user given credentials"""
+    """
+    Verifies validity of user given credentials
+    Returns a response for invalid credentials and None for valid ones
+    """
 
     if name_registered(name):
         flash("Nombre de usuario ocupado")
@@ -110,6 +113,18 @@ def verify_user_exists_with_name(name):
     if not name_registered(name):
         flash("El nombre de usuario no se encuentra registrado")
         return redirect(url_for("auth.login"))
+
+
+def validate_signup(form):
+    """Validates aspects that wtforms can't"""
+
+    name = request.form.get("name")
+    email = request.form.get("email")
+    password = request.form.get("password")
+    avatar_id = request.form.get("avatar_id")
+    about = request.form.get("about")
+
+    return verify_signup_credentials(name, email, password)
 
 
 @auth.route("/signup", methods=["GET", "POST"])
@@ -176,7 +191,6 @@ def login():
     return render_template("login.html", form=form)
 
 
-@auth
 @auth.route("/logout")
 @login_required
 def logout():
