@@ -1,77 +1,13 @@
 """Module to manage and verify user credentials"""
 
-import re
 from flask import Blueprint, redirect, url_for, render_template, request, flash
 from flask_login import login_user, login_required, logout_user
 from bcrypt import checkpw
-from pyisemail import is_email
 from .auth_classes import SignUpForm, LoginForm
 from .models import User
 from . import db
 
 auth = Blueprint("auth", __name__)
-
-regex_email = re.compile(
-    r"([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|\[[\t -Z^-~]*])")  # pylint: disable=line-too-long
-regex_password = re.compile(
-    r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
-
-
-def email_registered(email):
-    """Returns True if user with given email exist"""
-
-    return True if User.query.filter_by(email=email).first() else False
-
-
-def name_registered(name):
-    """Returns True if user with given name exist"""
-
-    return True if User.query.filter_by(name=name).first() else False
-
-
-def valid_email_format(string):
-    """Returns True if string has email format"""
-
-    return True if re.fullmatch(regex_email, string) and is_email(string) else False
-
-
-def valid_email_dns(string):
-    """Returns True if string has email format and direction is valid"""
-
-    return True if re.fullmatch(regex_email, string) and is_email(string, check_dns=True) else False
-
-
-def valid_password_format(string):
-    """Returns True if string has password required requisites"""
-
-    return True if re.fullmatch(regex_password, string) else False
-
-
-def verify_signup_credentials(name, email, password):
-    """
-    Verifies validity of user given credentials
-    Returns a response for invalid credentials and None for valid ones
-    """
-
-    if name_registered(name):
-        flash("Nombre de usuario ocupado")
-        return redirect(url_for("auth.signup"))
-
-    if valid_email_dns(name):
-        flash("Por favor, no use un correo electrónico como nombre de usuario")
-        return redirect(url_for("auth.signup"))
-
-    if email_registered(email):
-        flash("Correo electrónico ya registrado")
-        return redirect(url_for("auth.signup"))
-
-    if not valid_email_format(email):
-        flash("Correo electrónico inválido")
-        return redirect(url_for("auth.signup"))
-
-    if not valid_password_format(password):
-        flash("Contraseña inválida")
-        return redirect(url_for("auth.signup"))
 
 
 def insert_user_db(name, email, password, avatar_id, about):

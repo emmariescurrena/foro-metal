@@ -2,20 +2,37 @@
 
 from wtforms import StringField, PasswordField, RadioField, BooleanField
 from wtforms.widgets import TextArea
-from wtforms.validators import Length, EqualTo, InputRequired, ValidationError
+from wtforms.validators import Length, EqualTo, InputRequired
 from flask_wtf import FlaskForm
+from .custom_validators import (NameRegistered, NameNotEmail, EmailRegistered,
+                                ValidEmailFormat, ValidEmailDns, ValidPasswordFormat)
 
 
+# pylint: disable=no-value-for-parameter
 class SignUpForm(FlaskForm):
     """Form for sign up"""
     name = StringField("Nombre de usuario*",
-                       validators=[InputRequired(), Length(min=4, max=30)])
+                       validators=[
+                           InputRequired(),
+                           Length(min=4, max=30),
+                           NameRegistered(),
+                           NameNotEmail()
+                       ])
     email = StringField("Correo electrónico*",
-                        validators=[InputRequired(), Length(min=6, max=40)])
-    password = PasswordField(
-        "Contraseña*", validators=[InputRequired(), Length(min=8, max=72)])
-    confirm = PasswordField("Confirmar contraseña*",
-                            validators=[EqualTo("password")])
+                        validators=[
+                            InputRequired(),
+                            Length(min=6, max=40),
+                            EmailRegistered(),
+                            ValidEmailFormat(),
+                            ValidEmailDns()
+                        ])
+    password = PasswordField("Contraseña*",
+                             validators=[
+                                 InputRequired(),
+                                 Length(min=8, max=72),
+                                 ValidPasswordFormat(),
+                                 EqualTo("confirm")])
+    confirm = PasswordField("Confirmar contraseña*")
     avatar_id = RadioField("Choose avatar",
                            validators=[InputRequired()],
                            choices=["1", "2", "3"],
