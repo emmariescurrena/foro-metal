@@ -4,6 +4,7 @@ from wtforms import StringField
 from wtforms.widgets import TextArea
 from wtforms.validators import Length, InputRequired
 from flask_wtf import FlaskForm
+from .topic_custom_validators import TagsQuantity, TagsValidCharacters
 
 
 class CreateTopicForm(FlaskForm):
@@ -11,17 +12,18 @@ class CreateTopicForm(FlaskForm):
 
     title = StringField(
         "Título del tópico",
-        validators=[InputRequired(), Length(max=256)]
+        validators=[InputRequired(), Length(min=1, max=256)]
     )
     text = StringField(
         "Texto",
-        validators=[InputRequired(), Length(max=10000)],
+        validators=[InputRequired(), Length(min=10, max=10000)],
         widget=TextArea()
     )
     tags = StringField(
         "Etiquetas para ayudar a otros a encontrar tu tópico. Dejar espacio entre las etiquetas",
-        validators=[InputRequired()],
-        render_kw={"placeholder": "Ej.: thrash-metal guitar black-sabbath"}
+        validators=[InputRequired(), TagsQuantity(), TagsValidCharacters()],
+        render_kw={
+            "placeholder": "Ej.: thrash-metal guitar sabbath-black-sabbath"}
     )
 
 
@@ -30,6 +32,6 @@ class CreateReplyForm(FlaskForm):
 
     text = StringField(
         "Respuesta",
-        validators=[InputRequired(), Length(max=10000)],
+        validators=[InputRequired(), Length(min=10, max=10000)],
         widget=TextArea()
     )

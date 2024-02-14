@@ -1,8 +1,10 @@
 {% extends "base.html" %} 
 {% block title %}Crear tópico | {% endblock %}
 {% block main %}
-{% from "macros.jinja" import render_input %}
-<form method="POST" action="/signup">
+    <h1>Crear tópico</h1>
+
+    {% from "macros.jinja" import render_input %}
+    <form method="POST" action="/crear-topico">
         <table>
             <tr><td>{{ form.csrf_token }}</td></tr>
             {{ render_input(form.title) }}

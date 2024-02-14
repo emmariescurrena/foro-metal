@@ -3,14 +3,6 @@
 {% block main %}
     <h1>Registrarse</h1>
 
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div class="flash-message">
-            {{ messages[0] }}.
-        </div>
-    {% endif %}
-    {% endwith %}
-
     {% from "macros.jinja" import render_input %}
     <form method="POST" action="/signup">
         <table>

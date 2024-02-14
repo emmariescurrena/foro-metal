@@ -1,4 +1,4 @@
-"""Custom validators for forms"""
+"""Custom validators for signup form"""
 
 import re
 from wtforms import ValidationError
@@ -11,17 +11,29 @@ regex_password = re.compile(
     r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
 
 
+def name_registered(name):
+    """Returns True if name is registered, else False"""
+
+    return True if User.query.filter_by(name=name).first() else False
+
+
 class NameRegistered(object):
     """Name registered validator"""
 
     def __init__(self, message=None):
         if not message:
-            message = "El nombre de usuario ya registrado"
+            message = "Nombre de usuario ya registrado"
         self.message = message
 
     def __call__(self, form, field):
-        if User.query.filter_by(name=field.data).first():
+        if name_registered(field.data):
             raise ValidationError(self.message)
+
+
+def email_registered(email):
+    """Returns True if email is registered, else False"""
+
+    return True if User.query.filter_by(email=email).first() else False
 
 
 class EmailRegistered(object):
@@ -29,12 +41,20 @@ class EmailRegistered(object):
 
     def __init__(self, message=None):
         if not message:
-            message = "El correo electrónico ya registrado"
+            message = "Correo electrónico ya registrado"
         self.message = message
 
     def __call__(self, form, field):
-        if User.query.filter_by(email=field.data).first():
+        if email_registered(field.data):
             raise ValidationError(self.message)
+
+
+def valid_email_format(string):
+    """Returns True if string has valid email format, else False"""
+
+    if re.fullmatch(regex_email, string) and not is_email(string):
+        return True
+    return False
 
 
 class ValidEmailFormat(object):
@@ -46,7 +66,7 @@ class ValidEmailFormat(object):
         self.message = message
 
     def __call__(self, form, field):
-        if not re.fullmatch(regex_email, field.data) and not is_email(field.data):
+        if not valid_email_format(field.data):
             raise ValidationError(self.message)
 
 
@@ -59,8 +79,14 @@ class NameNotEmail(object):
         self.message = message
 
     def __call__(self, form, field):
-        if re.fullmatch(regex_email, field.data) and not is_email(field.data):
+        if valid_email_format(field.data):
             raise ValidationError(self.message)
+
+
+def valid_email_dns(email):
+    """Returns True if email has a valid domain, else False"""
+
+    return True if is_email(email, check_dns=True) else False
 
 
 class ValidEmailDns(object):
@@ -72,12 +98,18 @@ class ValidEmailDns(object):
         self.message = message
 
     def __call__(self, form, field):
-        if not is_email(field.data, check_dns=True):
+        if not valid_email_dns(field.data):
             raise ValidationError(self.message)
 
 
+def valid_password_format(password):
+    """Returns True if password match regex, else False"""
+
+    return True if re.fullmatch(regex_password, password) else False
+
+
 class ValidPasswordFormat(object):
-    """Valid password format"""
+    """Valid password format validator"""
 
     def __init__(self, message=None):
         if not message:
@@ -85,5 +117,5 @@ class ValidPasswordFormat(object):
         self.message = message
 
     def __call__(self, form, field):
-        if not re.fullmatch(regex_password, field.data):
+        if not valid_password_format(field.data):
             raise ValidationError(self.message)

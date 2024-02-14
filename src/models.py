@@ -49,7 +49,7 @@ class User(UserMixin, db.Model):
         self.since_date = date.today()
 
 
-class Topic(UserMixin, db.Model):
+class Topic(db.Model):
     """Topic model"""
 
     __tablename__ = "topics"
@@ -79,6 +79,9 @@ class Tag(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     tag: Mapped[str] = mapped_column(String(50))
 
+    def __init__(self, tag):
+        self.tag = tag
+
 
 class TopicTag(db.Model):
     """Topic-Tag model"""
@@ -91,6 +94,10 @@ class TopicTag(db.Model):
 
     topic = relationship("Topic", foreign_keys="TopicTag.id_topic")
     tag = relationship("Tag", foreign_keys="TopicTag.id_tag")
+
+    def __init__(self, id_topic, id_tag):
+        self.id_topic = id_topic
+        self.id_tag = id_tag
 
 
 class Reply(db.Model):
