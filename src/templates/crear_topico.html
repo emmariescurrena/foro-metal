@@ -3,18 +3,14 @@
 {% block main %}
     <h1>Crear tópico</h1>
 
-    {% from "macros.jinja" import render_input %}
+    {% from "macros.jinja" import render_input, render_button_or_hidden %}
     <form method="POST" action="/crear-topico">
         <table>
-            <tr><td>{{ form.csrf_token }}</td></tr>
+            {{ render_button_or_hidden(form.csrf_token) }}
             {{ render_input(form.title) }}
             {{ render_input(form.text) }}
             {{ render_input(form.tags) }}
-            <tr>
-                <td>
-                    <input type="submit" aria-label="Crear tópico" value="Crear tópico">
-                </td>
-            </tr>  
+            {{ render_button_or_hidden(form.submit) }}
         </table>
     </form>
 {% endblock %}

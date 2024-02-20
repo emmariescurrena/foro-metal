@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block title %}{{ info_topic.name }} | {% endblock %}
+{% block title %}{{ info_topic.title }} | {% endblock %}
 {% block main %}
     <article class="info-topic">
-        <h1 class="title">{{ info_topic.name }}</h1>
+        <h1 class="title">{{ info_topic.title }}</h1>
         <p class="text">{{ info_topic.text }}</p>
         <div class="div-user">
             <img class="avatar" src="" alt="avatar-usuario-{{ info_topic.user_name }}">
@@ -28,4 +28,14 @@
             </div>
         </article>
     {% endfor %}
+    {% if current_user.is_authenticated %}
+    {% from "macros.jinja" import render_input, render_button_or_hidden %}
+        <form method="POST">
+            <table>
+                {{ render_button_or_hidden(form.csrf_token) }}
+                {{ render_input(form.text) }}
+                {{ render_button_or_hidden(form.submit) }}
+            </table>
+        </form>
+    {% endif %}
 {% endblock %}  

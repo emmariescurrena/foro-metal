@@ -67,7 +67,7 @@ class LoginForm(FlaskForm):
         FlaskForm.__init__(self, *args, **kwargs)
         self.user = None
 
-    def validate(self):  # pylint: disable=arguments-differ
+    def validate(self, extra_validators=None):
         rv = FlaskForm.validate(self)
         if not rv:
             return False

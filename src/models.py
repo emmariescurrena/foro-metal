@@ -27,7 +27,7 @@ def title_to_url(title):
 
 
 class User(UserMixin, db.Model):
-    """User model"""
+    """user model"""
 
     __tablename__ = "users"
 
@@ -50,12 +50,12 @@ class User(UserMixin, db.Model):
 
 
 class Topic(db.Model):
-    """Topic model"""
+    """topic model"""
 
     __tablename__ = "topics"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(256))
+    title: Mapped[str] = mapped_column(String(256))
     text: Mapped[str] = mapped_column(String(10000))
     id_user: Mapped[int] = mapped_column(ForeignKey("users.id"))
     date: Mapped[date]
@@ -63,30 +63,30 @@ class Topic(db.Model):
 
     user = relationship("User", foreign_keys="Topic.id_user")
 
-    def __init__(self, name, text, id_user):
-        self.name = name
+    def __init__(self, title, text, id_user):
+        self.title = title
         self.text = text
         self.id_user = id_user
         self.date = date.today()
-        self.url = title_to_url(name)
+        self.url = title_to_url(title)
 
 
 class Tag(db.Model):
-    """Tag model"""
+    """tag model"""
 
     __tablename__ = "tags"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    tag: Mapped[str] = mapped_column(String(50))
+    name: Mapped[str] = mapped_column(String(50))
 
-    def __init__(self, tag):
-        self.tag = tag
+    def __init__(self, name):
+        self.name = name
 
 
 class TopicTag(db.Model):
-    """Topic-Tag model"""
+    """topic_tag model"""
 
-    __tablename__ = "topic-tag"
+    __tablename__ = "topic_tag"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     id_topic: Mapped[int] = mapped_column(ForeignKey("topics.id"))
@@ -101,7 +101,7 @@ class TopicTag(db.Model):
 
 
 class Reply(db.Model):
-    """Reply model"""
+    """reply model"""
 
     __tablename__ = "replies"
 

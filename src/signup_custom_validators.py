@@ -52,7 +52,7 @@ class EmailRegistered(object):
 def valid_email_format(string):
     """Returns True if string has valid email format, else False"""
 
-    if re.fullmatch(regex_email, string) and not is_email(string):
+    if re.fullmatch(regex_email, string) and is_email(string):
         return True
     return False
 

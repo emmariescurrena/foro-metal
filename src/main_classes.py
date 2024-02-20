@@ -1,10 +1,10 @@
 """Forms for main"""
 
-from wtforms import StringField
+from wtforms import StringField, SubmitField
 from wtforms.widgets import TextArea
 from wtforms.validators import Length, InputRequired
 from flask_wtf import FlaskForm
-from .topic_custom_validators import TagsQuantity, TagsValidCharacters
+from .topic_custom_validators import UniqueTopicTitle, TagsQuantity, TagsValidCharacters
 
 
 class CreateTopicForm(FlaskForm):
@@ -12,7 +12,8 @@ class CreateTopicForm(FlaskForm):
 
     title = StringField(
         "Título del tópico",
-        validators=[InputRequired(), Length(min=1, max=256)]
+        validators=[InputRequired(), Length(
+            min=1, max=256), UniqueTopicTitle()]
     )
     text = StringField(
         "Texto",
@@ -25,6 +26,7 @@ class CreateTopicForm(FlaskForm):
         render_kw={
             "placeholder": "Ej.: thrash-metal guitar sabbath-black-sabbath"}
     )
+    submit = SubmitField("Crear tópico")
 
 
 class CreateReplyForm(FlaskForm):
@@ -35,3 +37,4 @@ class CreateReplyForm(FlaskForm):
         validators=[InputRequired(), Length(min=10, max=10000)],
         widget=TextArea()
     )
+    submit = SubmitField("Responder")
