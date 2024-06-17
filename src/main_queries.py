@@ -39,6 +39,7 @@ def get_topic_for_topic_page(url):
         db.session.query(
             Topic.title,
             Topic.text,
+            User.avatar_id,
             User.name.label("user_name"),
             Topic.date,
             User.about.label("user_about"),
@@ -61,6 +62,7 @@ def get_replies_for_topic_page(id_topic):
     stmt = (
         select(
             Reply.text,
+            User.avatar_id,
             User.name.label("user_name"),
             Reply.date,
             User.about.label("user_about")

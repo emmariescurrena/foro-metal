@@ -1,7 +1,7 @@
 {% macro render_input(field, vertical=True, showErrors="true") %}
 {% if vertical == True %}
 <tr>
-    <td>{{ field.label }}</td>
+    <td>{{ field.label(class="form-label mt-3") }}</td>
 </tr>
 <tr>
     <td>{{ field(**kwargs)|safe }}

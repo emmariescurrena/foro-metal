@@ -1,18 +1,24 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 {% block title %}Inicio de sesión | {% endblock %}
 {% block main %}
-    <h1>Inicio de sesión</h1>
+<div class="container d-flex justify-content-between align-items-center mt-4 px-5">
+    <h1 class="text-primary m-0">Iniciar sesión</h1>
+</div>
 
-    {% from "macros.jinja" import render_input %}
-    <form method="POST" action="/login">
-        <table>
-            <tr><td>{{ form.csrf_token }}</td></tr>
-            {{ render_input(form.name_or_email) }}
-            {{ render_input(form.password) }}
-            {{ render_input(form.remember, vertical=False) }}
-            <tr>
-                <td><button type="submit" aria-label="Iniciar sesión">Iniciar sesión</button></td>
-            </tr>
-        </table>
-    </form>
+{% from "macros.jinja" import render_input %}
+<form method="POST" action="/login"
+    class="container d-flex justify-content-between align-items-center rounded mt-4 py-4 px-5 bg-body-secondary">
+    <table>
+        <tr>
+            <td>{{ form.csrf_token }}</td>
+        </tr>
+        {{ render_input(form.name_or_email) }}
+        {{ render_input(form.password) }}
+        {{ render_input(form.remember, vertical=False) }}
+        <tr>
+            <td><button class="btn btn-primary mt-3" type="submit" aria-label="Iniciar sesión">Iniciar sesión</button>
+            </td>
+        </tr>
+    </table>
+</form>
 {% endblock %}

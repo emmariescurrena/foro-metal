@@ -1,12 +1,14 @@
 {% extends "base.html"%}
 {% block title %} {{ info_user.name }} {% endblock %}
 {% block main %}
-    <img 
-        class="avatar"
-        src="{{ url_for('static', filename='img/' ~ info_user.avatar_id ~ '.svg') }}"
-        alt="avatar-{{ info_user.name }}"
-    >           
-    <h1 class="title">{{ info_user.name}}</h1>
-    <p class="since">Desde {{ info_user.since_date }}</p>
-    <p class="about">{{ info_user.about }}</p>
+<div
+    class="title container d-flex flex-row gap-5 justify-content-center align-items-center my-4 py-4 px-5 rounded bg-body-secondary">
+    <img class="avatar" src="{{ url_for('static', filename='img/' ~ info_user.avatar_id ~ '.svg') }}"
+        alt="avatar-{{ info_user.name }}">
+    <div>
+        <h1 class="title">{{ info_user.name}}</h1>
+        <p class="since">Desde {{ info_user.since_date }}</p>
+        <p class="about">{{ info_user.about }}</p>
+    </div>
+</div>
 {% endblock %}

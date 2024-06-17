@@ -1,46 +1,49 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 {% block title %}Registrarse | {% endblock %}
 {% block main %}
-    <h1>Registrarse</h1>
-
-    {% from "macros.jinja" import render_input %}
-    <form method="POST" action="/signup">
-        <table>
-            <tr><td>{{ form.csrf_token }}</td></tr>
-            {{ render_input(form.name) }}
-            {{ render_input(form.email) }}
-            {{ render_input(form.password) }}
-            <tr>
-                <td>
-                    La contraseña necesita tener al menos 8 caracteres, 1 letra
-                    minúscula, 1 letra mayúscula, 1 número y un carácter especial
-                </td>
-            </tr>
-            {{ render_input(form.confirm) }}
-            <tr>
-                <td>
-                    {{ form.avatar_id.label }}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    {% for subfield in form.avatar_id %}
-                        {{ subfield }}
-                        <label for="{{ subfield.id }}">
-                            <img src="{{ url_for(
+<div class="container d-flex justify-content-between align-items-center mt-4 px-5">
+    <h1 class="text-primary m-0">Registrarse</h1>
+</div>
+{% from "macros.jinja" import render_input %}
+<form method="POST" action="/signup"
+    class="container d-flex justify-content-between align-items-center rounded mt-4 py-4 px-5 bg-body-secondary">
+    <table>
+        <tr>
+            <td>{{ form.csrf_token }}</td>
+        </tr>
+        {{ render_input(form.name) }}
+        {{ render_input(form.email) }}
+        {{ render_input(form.password) }}
+        <tr>
+            <td>
+                La contraseña necesita tener al menos 8 caracteres, 1 letra
+                minúscula, 1 letra mayúscula, 1 número y un carácter especial
+            </td>
+        </tr>
+        {{ render_input(form.confirm) }}
+        <tr>
+            <td>
+                {{ form.avatar_id.label(class="mt-3")}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {% for subfield in form.avatar_id %}
+                {{ subfield }}
+                <label for="{{ subfield.id }}">
+                    <img src="{{ url_for(
                                         'static',
-                                        filename='img/' + subfield.data + '.svg') }}"
-                            />
-                        </label>
-                    {% endfor %}
-                </td>
-            </tr>
-            {{ render_input(form.about) }}
-            <tr>
-                <td>
-                    <input type="submit" aria-label="Registrarse" value="Registrarse">
-                </td>
-            </tr>  
-        </table>
-    </form>
+                                        filename='img/' + subfield.data + '.svg') }}" />
+                </label>
+                {% endfor %}
+            </td>
+        </tr>
+        {{ render_input(form.about) }}
+        <tr>
+            <td>
+                <input class="btn btn-primary mt-3" type="submit" aria-label="Registrarse" value="Registrarse">
+            </td>
+        </tr>
+    </table>
+</form>
 {% endblock %}

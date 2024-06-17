@@ -23,7 +23,8 @@ class SignUpForm(FlaskForm):
                            Length(min=4, max=30),
                            NameRegistered(),
                            NameNotEmail()
-                       ])
+                       ],
+                       render_kw={"class": "form-control"})
     email = StringField("Correo electrónico*",
                         validators=[
                             InputRequired(),
@@ -31,32 +32,39 @@ class SignUpForm(FlaskForm):
                             EmailRegistered(),
                             ValidEmailFormat(),
                             ValidEmailDns()
-                        ])
+                        ],
+                        render_kw={"class": "form-control"})
     password = PasswordField("Contraseña*",
                              validators=[
                                  InputRequired(),
                                  Length(min=8, max=72),
                                  ValidPasswordFormat(),
-                                 EqualTo("confirm")])
-    confirm = PasswordField("Confirmar contraseña*")
+                                 EqualTo("confirm")
+                            ],
+                            render_kw={"class": "form-control"})
+    confirm = PasswordField("Confirmar contraseña*",
+                            render_kw={"class": "form-control"})
     avatar_id = RadioField("Elegir avatar",
                            validators=[InputRequired()],
                            choices=["1", "2", "3"],
                            render_kw={"class": "input-hidden"})
     about = StringField("Frase que te describa",
                         validators=[Length(max=256)],
-                        widget=TextArea())
+                        widget=TextArea(),
+                        render_kw={"class": "form-control"})
 
 
 class LoginForm(FlaskForm):
     """Form for login"""
     name_or_email = StringField(
         "Nombre de usuario o correo electrónico",
-        validators=[InputRequired()]
+        validators=[InputRequired()],
+        render_kw={"class": "form-control"}
     )
     password = PasswordField(
         "Contraseña",
-        validators=[InputRequired()]
+        validators=[InputRequired()],
+        render_kw={"class": "form-control"}
     )
     remember = BooleanField(
         "Recordarme",

@@ -92,7 +92,7 @@ class TopicTag(db.Model):
     id_topic: Mapped[int] = mapped_column(ForeignKey("topics.id"))
     id_tag: Mapped[int] = mapped_column(ForeignKey("tags.id"))
 
-    topic = relationship("Topic", foreign_keys="TopicTag.id_topic")
+    topic = relationship("Topic", 		foreign_keys="TopicTag.id_topic")
     tag = relationship("Tag", foreign_keys="TopicTag.id_tag")
 
     def __init__(self, id_topic, id_tag):

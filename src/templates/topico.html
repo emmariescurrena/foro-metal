@@ -1,41 +1,44 @@
 {% extends "base.html" %}
 {% block title %}{{ info_topic.title }} | {% endblock %}
 {% block main %}
-    <article class="info-topic">
-        <h1 class="title">{{ info_topic.title }}</h1>
-        <p class="text">{{ info_topic.text }}</p>
-        <div class="div-user">
-            <img class="avatar" src="" alt="avatar-usuario-{{ info_topic.user_name }}">
-            <p class="username">
-                <a href="{{ url_for('main.user', username=info_topic.user_name) }}">@{{ info_topic.user_name }}</a>,
-                {{ info_topic.date }}
-            </p>
-            <p class="about"><i>{{ info_topic.user_about }}</i></p>
-        </div>
-    </article>
-    {% for reply in replies %}
-        <article class="reply">
-            <p class="text">{{ reply.text }}</p>
-            <div class="div-user">
-                <img class="avatar" src="" alt="avatar-usuario-{{ reply.user_name }}">
-                <p>
-                    <a href="{{ url_for('main.user', username=reply.user_name) }}">
-                        @{{ reply.user_name }}
-                    </a>
-                    , {{ reply.date }}
-                </p>
-                <p class="about"><i>{{ reply.user_about }}</i></p>
-            </div>
-        </article>
-    {% endfor %}
-    {% if current_user.is_authenticated %}
-    {% from "macros.jinja" import render_input, render_button_or_hidden %}
-        <form method="POST">
-            <table>
-                {{ render_button_or_hidden(form.csrf_token) }}
-                {{ render_input(form.text) }}
-                {{ render_button_or_hidden(form.submit) }}
-            </table>
-        </form>
-    {% endif %}
-{% endblock %}  
+<article class="info-topic container my-4 py-4 px-5 rounded bg-body-secondary">
+    <h1 class="title mb-3">{{ info_topic.title }}</h1>
+    <p class="text">{{ info_topic.text }}</p>
+    <div class="div-user">
+        <img class="avatar" src="../static/img/{{ info_topic.avatar_id }}.svg"
+            alt="avatar-usuario-{{ info_topic.user_name }}">
+        <p class="username">
+            <a href="{{ url_for('main.user', username=info_topic.user_name) }}">@{{ info_topic.user_name }}</a>,
+            {{ info_topic.date }}
+        </p>
+        <p class="about"><i>{{ info_topic.user_about }}</i></p>
+    </div>
+</article>
+{% for reply in replies %}
+<article class="reply info-topic container my-4 py-4 px-5 rounded bg-body-secondary">
+    <p class="text">{{ reply.text }}</p>
+    <div class="div-user">
+        <img class="avatar" src="{{ url_for('static', filename='img/' ~ reply.avatar_id ~ '.svg') }}"
+            alt="avatar-usuario-{{ reply.user_name }}">
+        <p>
+            <a href="{{ url_for('main.user', username=reply.user_name) }}">
+                @{{ reply.user_name }}
+            </a>
+            , {{ reply.date }}
+        </p>
+        <p class="about"><i>{{ reply.user_about }}</i></p>
+    </div>
+</article>
+{% endfor %}
+{% if current_user.is_authenticated %}
+{% from "macros.jinja" import render_input, render_button_or_hidden %}
+<form method="POST"
+    class="container d-flex justify-content-between align-items-center rounded mt-4 py-4 px-5 bg-body-secondary">
+    <table>
+        {{ render_button_or_hidden(form.csrf_token) }}
+        {{ render_input(form.text) }}
+        {{ render_button_or_hidden(form.submit) }}
+    </table>
+</form>
+{% endif %}
+{% endblock %}

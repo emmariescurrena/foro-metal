@@ -1,31 +1,41 @@
 {% extends "base.html" %}
 {% block title %}Tópicos | {% endblock %}
 {% block main %}
-    <h1>Tópicos</h1>
-    <p><a href="{{ url_for('main.create_topic') }}">Crear tópico</a></p>
-    {% for topic in topics %}
-        <article class="title">
-            <a href="{{ url_for ('main.topic', url=topic.url) }}">
-                <h2 class="title">{{ topic.title }}</h2>
-                {% if topic.text|length > 150 %}
-                    <p class="text">{{ topic.text[:150] }}...</p>
-                {% else %}
-                    <p class="text">{{ topic.text }}</p>
-                {% endif %}
+<div class="container d-flex justify-content-between align-items-center mt-4 py-1 px-5">
+    <h1 class="text-primary m-0">Tópicos</h1>
+    <a href="{{ url_for('main.create_topic') }}" class="text-decoration-none">
+        <div class="btn btn-primary btn-lg rounded-pill">
+            Crear tópico
+        </div>
+    </a>
+</div>
+{% for topic in topics %}
+<article class="title container my-4 py-4 px-5 rounded bg-body-secondary">
+    <a href="{{ url_for ('main.topic', url=topic.url) }}" class="text-decoration-none">
+        <h2 class="title text-primary">{{ topic.title }}</h2>
+        {% if topic.text|length > 150 %}
+        <p class="text-body">{{ topic.text[:150] }}...</p>
+        {% else %}
+        <p class="text-body">{{ topic.text }}</p>
+        {% endif %}
+    </a>
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="username">
+            <a href="{{ url_for('main.user', username=topic.user_name) }}" class="text-decoration-none text-secondary">
+                @{{ topic.user_name }}
             </a>
-            <p class="username">
-                <a href="{{ url_for('main.user', username=topic.user_name) }}">
-                    @{{ topic.user_name }}
-                </a>
-                , {{ topic.date }}
-            </p>
-            <p class="tags">
-                {% for tag_name in topic.tags %}
-                <a href="{{ url_for('main.tagged', tag_name=tag_name) }}">
+            , {{ topic.date }}
+        </div>
+        <div class="tags d-inline-flex flex-row gap-2">
+            {% for tag_name in topic.tags %}
+            <a href="{{ url_for('main.tagged', tag_name=tag_name) }}" class="text-decoration-none">
+                <div class="py-2 px-3 text-center rounded-pill bg-body-tertiary">
                     {{ tag_name }}
-                </a>
-                {% endfor %}
-            </p>
-        </article>
-    {% endfor %}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</article>
+{% endfor %}
 {% endblock %}

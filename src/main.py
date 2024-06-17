@@ -133,7 +133,6 @@ def create_topic():
         insert_topic_tag_db(id_topic, id_tags)
 
         url = get_topic_url_with_id(id_topic)
-        print(url)
         return redirect(url_for("main.topic", url=url))
 
     return render_template("crear_topico.html", form=form)

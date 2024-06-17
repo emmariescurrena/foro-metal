@@ -14,7 +14,8 @@
     font-family: "Open Sans regular", sans-serif;
 }
 
-h1, h2 {
+h1,
+h2 {
     font-family: "Open Sans Bold", sans-serif;
 }
 
@@ -23,7 +24,7 @@ h1, h2 {
     height: auto;
 }
 
-a > img {
+a>img {
     width: 2em;
     height: 2em;
 }
@@ -38,17 +39,17 @@ a > img {
     left: -9999px;
 }
 
-input[type=radio]:checked + label>img {
+input[type=radio]:checked+label>img {
     border: 1px solid #fff;
-    box-shadow: 0 0 3px 3px rgb(135, 0, 153);
+    box-shadow: 0 0 3px 3px rgb(0, 110, 153);
 }
 
-input[type=radio]:focus + label>img {
-    border: 1px solid rgb(135, 0, 153);
+input[type=radio]:focus+label>img {
+    border: 1px solid rgb(0, 110, 153);
 }
 
 
-input[type=radio] + label>img {
+input[type=radio]+label>img {
     border: 1px dashed #444;
     width: 150px;
     height: 150px;
