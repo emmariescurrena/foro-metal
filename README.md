@@ -1,3 +1,3 @@
 # Foro de metal
 
-Forum about heavy metal. Built with HTML, CSS, Flask and PostgreSQL
+Forum about heavy metal. Built with Flask, Jinja, Bootstrap and PostgreSQL
