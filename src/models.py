@@ -6,8 +6,9 @@ from bcrypt import gensalt, hashpw
 from sqlalchemy import String, ForeignKey, LargeBinary
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from flask_login import UserMixin
-from . import db
+from sqlalchemy.ext.declarative import declarative_base
 
+Base = declarative_base()
 
 def title_to_url(title):
     """
@@ -26,7 +27,7 @@ def title_to_url(title):
     return url
 
 
-class User(UserMixin, db.Model):
+class User(UserMixin, Base):
     """user model"""
 
     __tablename__ = "users"
@@ -49,7 +50,7 @@ class User(UserMixin, db.Model):
         self.since_date = date.today()
 
 
-class Topic(db.Model):
+class Topic(Base):
     """topic model"""
 
     __tablename__ = "topics"
@@ -71,7 +72,7 @@ class Topic(db.Model):
         self.url = title_to_url(title)
 
 
-class Tag(db.Model):
+class Tag(Base):
     """tag model"""
 
     __tablename__ = "tags"
@@ -83,7 +84,7 @@ class Tag(db.Model):
         self.name = name
 
 
-class TopicTag(db.Model):
+class TopicTag(Base):
     """topic_tag model"""
 
     __tablename__ = "topic_tag"
@@ -100,7 +101,7 @@ class TopicTag(db.Model):
         self.id_tag = id_tag
 
 
-class Reply(db.Model):
+class Reply(Base):
     """reply model"""
 
     __tablename__ = "replies"

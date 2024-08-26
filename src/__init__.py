@@ -5,15 +5,10 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from sqlalchemy.orm import DeclarativeBase
-
-
-class Base(DeclarativeBase):
-    """Base for db models"""
-    pass  # pylint: disable=unnecessary-pass
-
+from sqlalchemy import create_engine
+from .models import Base
 
 db = SQLAlchemy(model_class=Base)
-
 
 def create_app():
     """
@@ -24,13 +19,14 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object("config")
 
+    path = os.environ['SQLALCHEMY_DATABASE_URI']
+    engine = create_engine(path, echo=True)
+    db.metadata.create_all(engine)
     db.init_app(app)
 
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"
     login_manager.init_app(app)
-
-    # pylint: disable=import-outside-toplevel
 
     from .models import User
 
