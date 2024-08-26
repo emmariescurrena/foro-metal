@@ -2,6 +2,8 @@
 
 Forum about heavy metal. Built with Flask, Jinja, Bootstrap and PostgreSQL
 
+![image](https://github.com/user-attachments/assets/6114fd45-69cd-4360-b942-18833a08f9a1)
+
 ## Features
 
 - User Session
