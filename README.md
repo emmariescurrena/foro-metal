@@ -2,7 +2,8 @@
 
 Forum about heavy metal. Built with Flask, Jinja, Bootstrap and PostgreSQL
 
-![image](https://github.com/user-attachments/assets/6114fd45-69cd-4360-b942-18833a08f9a1)
+![image](https://github.com/user-attachments/assets/023286d6-ea34-4b13-97f3-be2695f486cf)
+
 
 ## Features
 
